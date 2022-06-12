@@ -5,7 +5,7 @@ import HomePageLayout from './components/templates/HomePageLayout.js';
 import BlogPageLayout from './components/templates/BlogPageLayout.js';
 import UserRegistrationPageLayout from './components/templates/UserRegistrationPageLayout.js'
 import SimplePageLayout from './components/templates/SimplePageLayout.js'
-import { Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Platform from './components/pages/Platform.js';
 import Login from './components/pages/Login.js';
 import NewsAndEvents from './components/pages/NewsAndEvents.js';
@@ -25,6 +25,7 @@ function App() {
 
   return (
    <UserProvider value ={user, setUserInfo, logout}> 
+   <BrowserRouter>
         <Switch>
         	<Route path="/" component={HomePageLayout} exact />
         	<Route path="/contactus" component={UserRegistration} exact />
@@ -36,6 +37,7 @@ function App() {
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
         </Switch>
+        </BrowserRouter>
     </UserProvider>
   );
 }
