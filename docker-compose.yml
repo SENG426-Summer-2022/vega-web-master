@@ -8,7 +8,6 @@ services:
     image: "venus/quantum"
     ports:
       - "8000:8000"
-    network_mode: "host"
   frontend:
     build:
       context: ./
@@ -18,4 +17,3 @@ services:
       - "3000:3000"
     links:
       - "backend:be"
-    network_mode: "host"
