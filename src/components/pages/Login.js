@@ -18,11 +18,14 @@ const Login = (props) => {
 				console.log("Response", res);
 				console.log(res.jwt);
 				if (typeof (res.authorities) == 'object') {
-					var role = res.authorities[0].authority;
-					setUserInfo(userInfo.username, res.jwt, role)
-					setAuth(true);
+          if (res.code != 401){
+					  var role = res.authorities[0].authority;
+					  setUserInfo(userInfo.username, res.jwt, role)
+					  setAuth(true);
+				  }
 				} else {
-					console.log("Failed to sign in")
+					console.log("Failed to sign in");
+          alert("Login failed! The username or password is incorrect!");
 				}
 			})
 	}

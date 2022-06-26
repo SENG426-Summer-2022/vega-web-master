@@ -23,10 +23,7 @@ const VenusNavBar = (props) => {
 
   if(user.role == "ROLE_ADMIN"){
     adminpanel = <Nav.Link href="/adminpanel">Admin</Nav.Link>
-  }
-
-  //Adding
-  if(user.role == "ROLE_ADMIN"){
+    //Adding "Report" to link to Admin Report feature
     userreport = <Nav.Link href="/report">Report</Nav.Link>
   }
 
