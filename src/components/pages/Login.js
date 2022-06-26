@@ -8,9 +8,10 @@ import  { Redirect } from 'react-router-dom'
 
 const Login = (props) => {
 
-	const { context } = props; 
+	const { context } = props;
 	const {user, setUserInfo,logout} = useContext(UserContext);
 	const [auth, setAuth] = useState(false);
+	const [message, setMessage] = useState(false);
 	console.log("Userinfo", user);
 	function onSubmit(userInfo){
 		login(userInfo)
@@ -18,22 +19,25 @@ const Login = (props) => {
 				console.log("Response", res);
 				console.log(res.jwt);
 				if (typeof (res.authorities) == 'object') {
-          if (res.code != 401){
-					  var role = res.authorities[0].authority;
-					  setUserInfo(userInfo.username, res.jwt, role)
-					  setAuth(true);
-				  }
-				} else {
-					console.log("Failed to sign in");
-          alert("Login failed! The username or password is incorrect!");
+				    const role = res.authorities[0].authority;
+				    setUserInfo(userInfo.username, res.jwt, role);
+				    return setAuth(true);
 				}
+				// Login failed
+				if (res.code != 401) {
+				    return setMessage("Login failed, The username or password is incorrect.");
+				}
+				console.log("Failed to sign in");
+				setMessage("Login Failed Please Try Again Later");
 			})
 	}
 
 		if(!auth){
 			return (
 				<UserRegistrationPageLayout>
-					<LoginUser onSubmit={onSubmit}/>
+					<LoginUser onSubmit={onSubmit} />
+					<p></p>
+					<p className="alert-danger text-center">{message}</p>
 				</UserRegistrationPageLayout>
 			);
 		} else {
