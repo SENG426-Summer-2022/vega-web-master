@@ -31,6 +31,7 @@ const LoginUser = ({onSubmit}) => {
 	      			</Button>
     			</Form>
       		</Col>
+		    <p></p>
 			<Button href="/signup">
 				SignUp
 			</Button>

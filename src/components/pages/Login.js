@@ -17,9 +17,13 @@ const Login = (props) => {
 			.then(res => {
 				console.log("Response", res);
 				console.log(res.jwt);
-				var role = res.authorities[0].authority;
-				setUserInfo(userInfo.username, res.jwt, role)
-				setAuth(true);
+				if (typeof (res.authorities) == 'object') {
+					var role = res.authorities[0].authority;
+					setUserInfo(userInfo.username, res.jwt, role)
+					setAuth(true);
+				} else {
+					console.log("Failed to sign in")
+				}
 			})
 	}
 
