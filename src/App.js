@@ -8,6 +8,7 @@ import SimplePageLayout from './components/templates/SimplePageLayout.js'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Platform from './components/pages/Platform.js';
 import Login from './components/pages/Login.js';
+import SignUp from './components/pages/SignUp.js';
 import NewsAndEvents from './components/pages/NewsAndEvents.js';
 import Resources from './components/pages/Resources.js';
 import AdminPanel from './components/pages/AdminPanel.js';
@@ -19,12 +20,11 @@ import {UserContext} from './auth/UserProvider.js';
 import UserAccount from './components/pages/UserAccount.js';
 
 function App() {
-  
 
   const {user, setUserInfo, logout} = useContext(UserContext);
 
   return (
-   <UserProvider value ={user, setUserInfo, logout}> 
+   <UserProvider value ={user, setUserInfo, logout}>
    <BrowserRouter>
         <Switch>
         	<Route path="/" component={HomePageLayout} exact />
@@ -33,6 +33,7 @@ function App() {
         	<Route path="/news" component={NewsAndEvents} />
         	<Route path="/platform" component={Platform} />
         	<Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} />
           <Route path="/account" component={UserAccount} />
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
