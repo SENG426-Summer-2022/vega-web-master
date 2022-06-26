@@ -24,7 +24,7 @@ const Login = (props) => {
 				    return setAuth(true);
 				}
 				// Login failed
-				if (res.code != 401) {
+				if (res.code === 401) {
 				    return setMessage("Login failed, The username or password is incorrect.");
 				}
 				console.log("Failed to sign in");
