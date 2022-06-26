@@ -7,7 +7,7 @@ import {UserContext} from '../../auth/UserProvider.js';
 import  { Redirect } from 'react-router-dom'
 
 const Login = (props) => {
-	
+
 	const { context } = props; 
 	const {user, setUserInfo,logout} = useContext(UserContext);
 	const [auth, setAuth] = useState(false);
@@ -17,16 +17,16 @@ const Login = (props) => {
 			.then(res => {
 				console.log("Response", res);
 				console.log(res.jwt);
-
-				if (res.code != 401){
-					var role = res.authorities[0].authority;
-					setUserInfo(userInfo.username, res.jwt, role)
-					setAuth(true);
+				if (typeof (res.authorities) == 'object') {
+          if (res.code != 401){
+					  var role = res.authorities[0].authority;
+					  setUserInfo(userInfo.username, res.jwt, role)
+					  setAuth(true);
+				  }
+				} else {
+					console.log("Failed to sign in");
+          alert("Login failed! The username or password is incorrect!");
 				}
-				else{
-					alert("Login failed! The username or password is incorrect!");
-				}
-				
 			})
 	}
 
