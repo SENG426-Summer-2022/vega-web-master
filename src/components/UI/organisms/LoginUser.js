@@ -2,11 +2,11 @@ import {Form, Button, Row, Col} from 'react-bootstrap';
 import React, { useState } from 'react';
 
 const LoginUser = ({onSubmit}) => {
-	
+
 	const [username, setUsername]  = useState('');
 	const [password, setPassword] = useState('');
 
-	const submitForm:function = (evt) => {
+	const submitForm = (evt) => {
 		evt.preventDefault();
 		onSubmit({
 			'username' : username,
@@ -31,7 +31,10 @@ const LoginUser = ({onSubmit}) => {
 	      			</Button>
     			</Form>
       		</Col>
-   	 	</Row>
+			<Button href="/signup">
+				SignUp
+			</Button>
+		</Row>
 		);
 }
 export default LoginUser;

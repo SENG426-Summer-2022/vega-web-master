@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
 
 
 app.use("/api/login", auth);
+// TODO determin how this should be connected
+app.use("/api/signup", auth);
 app.use("/api/venus", fileUploader)
 app.use("/api/venus/admin", adminPanel)
 
