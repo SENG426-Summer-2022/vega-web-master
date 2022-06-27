@@ -20,6 +20,10 @@ const SignUp = (props) => {
 			    if (res.errno){
 				setMessage("Failed To Process Your Registration Please Try Again Later");
 				return;
+			    }				// Login failed
+			    if (res.code === 401) {
+				setMessage("Unauthorized Sign Up.");
+				return
 			    }
 			    setMessage("")
 			    alert("Your account will soon be created");

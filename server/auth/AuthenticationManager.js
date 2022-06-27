@@ -1,12 +1,10 @@
-import bodyParser from 'body-parser';
-import express from 'express';
 import {login, signup} from '../services/LoginRequestAPI.js';
-import {doPost} from './HTTPRequestAPI.js';
 
-function authModule(req, res) {
+export function authModule(req, res) {
 	if (req.method == 'POST') {
     	const userInfo = req.body;
     	console.log(userInfo);
+        console.log("Authenticating User");
     	login("http://localhost:8080/venus/authenticate", userInfo)
     		.then(response => {
     			console.log("Response", response);
@@ -24,6 +22,7 @@ export function signupModule(req, res) {
 	if (req.method == 'POST') {
     	const userInfo = req.body;
     	console.log(userInfo);
+        console.log("Registering User");
         signup("http://localhost:8080/venus/register", userInfo)
             .then(response => {
                 console.log("Response", response);
@@ -36,5 +35,4 @@ export function signupModule(req, res) {
     }
 }
 
-export default authModule;
-
+export default { authModule, signupModule };
