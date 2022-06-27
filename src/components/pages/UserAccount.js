@@ -21,6 +21,41 @@ const UserAccount = (props) => {
     history.push("/");
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    // get the values from the react-bootstrap form
+    const data = {
+      newPassword: e.target.newPassword.value,
+      confirmPassword: e.target.confirmPassword.value,
+    };
+    console.log({ data });
+
+    // compare passwords
+    if (data.newPassword !== data.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    // send to backend
+    const response = await fetch("/changepassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.jwt}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 200) {
+      alert("Password changed successfully");
+      // clear password fields
+      document.getElementById("newPassword").value = "";
+      document.getElementById("confirmPassword").value = "";
+    } else {
+      alert("Password change failed");
+    }
+  };
+
   return (
     <SimplePageLayout>
       <Stack gap={3} style={{ maxWidth: "400px" }}>
@@ -29,16 +64,16 @@ const UserAccount = (props) => {
         <Container style={{ marginBottom: "4rem" }}>
           <b>Change Password</b>
           <Col style={{ marginTop: "1rem" }}>
-            <Form>
+            <Form onSubmit={onSubmit}>
               <Form.Group
-                controlId="formBasicPassword"
+                controlId="newPassword"
                 style={{ marginBottom: "1rem" }}
               >
                 <Form.Label>New Password</Form.Label>
                 <Form.Control type="password" placeholder="Password" />
               </Form.Group>
               <Form.Group
-                controlId="formBasicPassword"
+                controlId="confirmPassword"
                 style={{ marginBottom: "1rem" }}
               >
                 <Form.Label>Confirm Password</Form.Label>
