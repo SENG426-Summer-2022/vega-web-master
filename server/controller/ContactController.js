@@ -1,7 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-let router = express();
+const router = express();
+router.disable("x-powered-by");
 
 router.use(bodyParser.json({ limit: "20mb" }));
 
