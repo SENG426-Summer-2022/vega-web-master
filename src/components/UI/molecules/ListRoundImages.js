@@ -13,12 +13,12 @@ const ListRoundImages = (props) => {
 	const images = [
 		{"src": PaulAguilar, "name": "Paul Aguilar", "email": "", "pos":"CHIEF EXECUTIVE OFFICER"},
 		{"src": JonOliver, "name": "Jon Oliver", "email": "", "pos":"CHIEF FINANCIAL OFFICER"},
-		{"src": ClaudineZhang, "name": "Claudine Zhang", "email": "", "pos":"CHIEF OPEARTING OFFICER"},
+		{"src": ClaudineZhang, "name": "Claudine Zhang", "email": "", "pos":"CHIEF OPERATING OFFICER"},
 		{"src": LovelinKumar, "name": "Lovelin Kumar", "email": "", "pos":"CHIEF TECHNOLOGY OFFICER"},
-		{"src": MichelKouame, "name": "Michel Kouame", "email": "", "pos":"VP Sales"},
+		{"src": MichelKouame, "name": "Michel Kouame", "email": "", "pos":"VP SALES"},
 		{"src": AngelinaDaCosta, "name": "Angelina Da Costa", "email": "", "pos":"CHIEF MARKETING OFFICER"},
 		{"src": BrijeshGupta, "name": "Brijesh Gupta", "email": "", "pos":"GENERAL COUNSEL AND SECRETARY"},
-		{"src": AmyFofana, "name": "Amy Fofana", "email": "", "pos":"VP, BUSINESS OPERATIONS"}
+		{"src": AmyFofana, "name": "Amy Fofana", "email": "", "pos":"VP BUSINESS OPERATIONS"}
 	]
 
 	const htmlForImages = images.map((image) =>  <Col xs={6} md={4}><RoundImage {...image} /></Col>);
