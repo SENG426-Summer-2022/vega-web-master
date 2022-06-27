@@ -1,30 +1,64 @@
-import {useState, useContext} from 'react';
-import {useHistory} from "react-router-dom";
-import {Button, Row, Col} from 'react-bootstrap';
-import SimplePageLayout from '../templates/SimplePageLayout.js';
-import ListRoundedImages from '../UI/molecules/ListRoundImages.js';
-import {UserContext} from '../../auth/UserProvider.js';
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { Form, Button, Stack, Col, Container } from "react-bootstrap";
+import SimplePageLayout from "../templates/SimplePageLayout.js";
+import { UserContext } from "../../auth/UserProvider.js";
 
+/**
+ * 
+ * 
+Add a container containing two password inputs and a submission button to that /account path
+Add front-end verification that the entered passwords match
+Add front-end password encoding and send to /changepassword backend endpoint (to be implemented)} props 
+ */
 
 const UserAccount = (props) => {
-	const {user, setUserInfo,logout} = useContext(UserContext);
-	const history = useHistory();
-	
-	const logoutAndRouteChange = () => {
-		logout();
-		history.push("/");
-	}	
+  const { user, logout } = useContext(UserContext);
+  const history = useHistory();
 
-	return (
-		<SimplePageLayout>
-			<Row>
-				<Col sm={6}>
-					<p>Hello,</p>
-					<p>{user.username}</p>
-					<Button onClick={logoutAndRouteChange} size="sm">signout</Button>
-				</Col>
-			</Row>
-		</SimplePageLayout>
-		);
-}
+  const logoutAndRouteChange = () => {
+    logout();
+    history.push("/");
+  };
+
+  return (
+    <SimplePageLayout>
+      <Stack gap={3} style={{ maxWidth: "400px" }}>
+        <p>Hello,</p>
+        <p>{user.username}</p>
+        <Container style={{ marginBottom: "4rem" }}>
+          <b>Change Password</b>
+          <Col style={{ marginTop: "1rem" }}>
+            <Form>
+              <Form.Group
+                controlId="formBasicPassword"
+                style={{ marginBottom: "1rem" }}
+              >
+                <Form.Label>New Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" />
+              </Form.Group>
+              <Form.Group
+                controlId="formBasicPassword"
+                style={{ marginBottom: "1rem" }}
+              >
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </Col>
+        </Container>
+        <Button
+          onClick={logoutAndRouteChange}
+          size="sm"
+          style={{ maxWidth: "100px" }}
+        >
+          Sign Out
+        </Button>
+      </Stack>
+    </SimplePageLayout>
+  );
+};
 export default UserAccount;
