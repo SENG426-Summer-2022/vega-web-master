@@ -1,54 +1,54 @@
-import {Form, Button, Col} from 'react-bootstrap';
-import {useState, useEffect} from "react"
+import { Form, Button, Col } from "react-bootstrap";
+import { useState } from "react";
 
 const checkNameValidity = () => {
-    let nameIsValid = true;
-	  // check if name has sepcial characters
-	  const name = document.getElementById('name').value;
-	  const nameRegex = /^[a-zA-Z]+$/;
-	  if (!nameRegex.test(name)) {
-      // set bootstrap form to invalid on name
-      document.getElementById('name').classList.add('is-invalid');
-      nameIsValid = false;
-    }
-    return nameIsValid;
+  let nameIsValid = true;
+  // check if name has sepcial characters
+  const name = document.getElementById("name").value;
+  const nameRegex = /^[a-zA-Z]+$/;
+  if (!nameRegex.test(name)) {
+    // set bootstrap form to invalid on name
+    document.getElementById("name").classList.add("is-invalid");
+    nameIsValid = false;
   }
+  return nameIsValid;
+};
 
 const checkMessageValidity = () => {
-    let messageIsValid = true;
-    // message max 1000 characters
-    const message = document.getElementById('message').value;
-    if (message.length > 1000) {
-      // set bootstrap form to invalid on message
-      document.getElementById('message').classList.add('is-invalid');
-      messageIsValid = false;
-    }
-    return messageIsValid;
+  let messageIsValid = true;
+  // message max 1000 characters
+  const message = document.getElementById("message").value;
+  if (message.length > 1000) {
+    // set bootstrap form to invalid on message
+    document.getElementById("message").classList.add("is-invalid");
+    messageIsValid = false;
   }
+  return messageIsValid;
+};
 
 const resetValidation = () => {
   document.getElementById("name").classList.remove("is-invalid");
   document.getElementById("email").classList.remove("is-invalid");
   document.getElementById("message").classList.remove("is-invalid");
-}
+};
 
 const preventEvents = (event) => {
   event.preventDefault();
   event.stopPropagation();
-}
+};
 
 const ContactUsForm = (props) => {
-	const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
   const onChange = () => {
-    setSubmitSuccess(false); 
+    setSubmitSuccess(false);
     setSubmitError(false);
     setChecked(false);
-  }
+  };
 
-	const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     // remove is-invalid class from all fields
     setSubmitSuccess(false);
     setChecked(false);
@@ -60,17 +60,17 @@ const ContactUsForm = (props) => {
       setChecked(true);
       return;
     }
-    
+
     const nameIsValid = checkNameValidity();
     const messageIsValid = checkMessageValidity();
     if (nameIsValid && messageIsValid) {
       // submit form
       // collect name, email, and message
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
-      const result = await props.onSubmit(name, email, message);
-      console.log(result)
+      const result = await props.onSubmit(
+        document.getElementById("name").value,
+        document.getElementById("email").value,
+        document.getElementById("message").value
+      );
       if (result.success) {
         // set success to true
         setSubmitSuccess(true);
@@ -81,50 +81,53 @@ const ContactUsForm = (props) => {
     }
 
     // invalid
-	};
+  };
 
-	return (
-      <Col className="mx-auto" xs={6}>
+  return (
+    <Col className="mx-auto" xs={6}>
+      {submitSuccess && (
+        <div className="alert alert-success">Message sent successfully</div>
+      )}
+      {submitError && (
+        <div className="alert alert-danger">Message failed to send</div>
+      )}
 
-        {submitSuccess && <div className="alert alert-success">Message sent successfully</div>}
-        {submitError && <div className="alert alert-danger">Message failed to send</div>}
+      <Form
+        noValidate
+        id="contact-form"
+        validated={checked}
+        onSubmit={handleSubmit}
+        onChange={onChange}
+      >
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>NAME</Form.Label>
+          <Form.Control required type="text" />
+          <Form.Control.Feedback type="invalid">
+            Please provide your name. Only letters are allowed.
+          </Form.Control.Feedback>
+        </Form.Group>
 
-        <Form 
-          noValidate
-          id="contact-form"
-          validated={checked}
-          onSubmit={handleSubmit}
-          onChange={onChange}
-          >
-      			<Form.Group className="mb-3" controlId="name">
-        			<Form.Label>NAME</Form.Label>
-        			<Form.Control required type="text" />
-					<Form.Control.Feedback type="invalid">
-						Please provide your name. Only letters are allowed.
-					</Form.Control.Feedback>
-      			</Form.Group>
+        <Form.Group className="mb-3" controlId="email">
+          <Form.Label>EMAIL</Form.Label>
+          <Form.Control required type="email" />
+          <Form.Control.Feedback type="invalid">
+            Please provide your email.
+          </Form.Control.Feedback>
+        </Form.Group>
 
-      			<Form.Group className="mb-3" controlId="email">
-        			<Form.Label>EMAIL</Form.Label>
-        			<Form.Control required type="email"  />
-					<Form.Control.Feedback type="invalid">
-						Please provide your email.
-					</Form.Control.Feedback>
-      			</Form.Group>
+        <Form.Group className="mb-3" controlId="message">
+          <Form.Label>MESSAGE</Form.Label>
+          <Form.Control required as="textarea" rows={3} />
+          <Form.Control.Feedback type="invalid">
+            Please provide a message. Max 1000 characters.
+          </Form.Control.Feedback>
+        </Form.Group>
 
-      			<Form.Group className="mb-3" controlId="message">
-        			<Form.Label>MESSAGE</Form.Label>
-        			<Form.Control required as="textarea" rows={3} />
-					<Form.Control.Feedback type="invalid">
-						Please provide a message. Max 1000 characters.
-					</Form.Control.Feedback>
-      			</Form.Group>
-
-      			<Button variant="primary" type="submit">
-        			Submit
-      			</Button>
-    		</Form>
-      </Col>
-		);
-}
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </Col>
+  );
+};
 export default ContactUsForm;
