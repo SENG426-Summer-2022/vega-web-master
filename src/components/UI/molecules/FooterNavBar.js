@@ -4,7 +4,7 @@ const FooterNavBar = (props) => {
 	const [headOne, ...listOne] = ['PLATFORMS', 'Deep Packet Inspection (DPI)', 'Intrusion Detection and Prevention System (IDS/IPS)'];
 	const [headTwo, ...listTwo] = ['WHY VEGA?', 'Why Vega?', 'Industry Validation', 'Our Customers'];
 	const [headThree, ...listThree] = ['News', 'IG Design Group Selects Vega NextGen for Cybersecurity', 'Industry Validation', 'Our Customers'];
-	const linksOne = ["/", "/"];
+	const linksOne = ["/platform", "/platform"];
 	const linksTwo = ["/aboutus", "/", "/"];
 	const linksThree = ["/news", "/news", "/"];
 	return (
