@@ -8,6 +8,10 @@ export function enableAccount(username,token){
 	return doGet("http://localhost:8000/api/venus/admin/enableuser?enable=true&username="+username, token)	
 }
 
+export function disableAccount(username,token){
+	return doGet("http://localhost:8000/api/venus/admin/enableuser?enable=false&username="+username, token)	
+}
+
 export function changeAccountRole(username, role, token){
 	return doGet("http://localhost:8000/api/venus/admin/changerole?username="+username+"&role="+role, token)
 }
