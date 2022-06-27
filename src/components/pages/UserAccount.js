@@ -4,15 +4,7 @@ import { Form, Button, Stack, Col, Container } from "react-bootstrap";
 import SimplePageLayout from "../templates/SimplePageLayout.js";
 import { UserContext } from "../../auth/UserProvider.js";
 
-/**
- * 
- * 
-Add a container containing two password inputs and a submission button to that /account path
-Add front-end verification that the entered passwords match
-Add front-end password encoding and send to /changepassword backend endpoint (to be implemented)} props 
- */
-
-const UserAccount = (props) => {
+const UserAccount = () => {
   const { user, logout } = useContext(UserContext);
   const history = useHistory();
 
