@@ -6,7 +6,7 @@ const SignUpUser = ({ onSubmit }) => {
 	const [password, setPassword] = useState('');
 	const [firstname, setFirstName] = useState('');
 	const [lastname, setLastName] = useState('');
-	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
 
 	const [confirm_password, setConfirmPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
@@ -14,7 +14,7 @@ const SignUpUser = ({ onSubmit }) => {
 
 	const submitForm = (evt) => {
 		evt.preventDefault();
-		const empty = [email, lastname, firstname, password, confirm_password].find((x) => x == "")
+		const empty = [username, lastname, firstname, password, confirm_password].find((x) => x == "")
 		if (empty != undefined) {
 			return setErrorMessage("Please fill all fields");
 		}
@@ -23,9 +23,9 @@ const SignUpUser = ({ onSubmit }) => {
 		}
 		setErrorMessage("")
 		onSubmit({
+			'username': username,
 			'firstname': firstname,
 			'lastname': lastname,
-			'email': email,
 			'password': password
 		})
 	}
@@ -44,8 +44,8 @@ const SignUpUser = ({ onSubmit }) => {
 						<Form.Control type="text" onChange={e => setLastName(e.target.value)} />
 					</Form.Group>
 					<Form.Group className="mb-3">
-						<Form.Label>EMAIL</Form.Label>
-						<Form.Control type="text" onChange={e => setEmail(e.target.value)} />
+						<Form.Label>USERNAME</Form.Label>
+						<Form.Control type="text" onChange={e => setUsername(e.target.value)} />
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label>PASSWORD</Form.Label>
