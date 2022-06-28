@@ -43,10 +43,23 @@ const UserAccount = () => {
 
   return (
     <SimplePageLayout>
-      <Stack gap={3} style={{ maxWidth: "400px" }}>
-        <p>Hello,</p>
-        <p>{user.username}</p>
-        <Container style={{ marginBottom: "4rem" }}>
+      <Stack gap={5} style={{ marginTop: "1rem" }}>
+        <Stack direction="horizontal">
+          <p>Hello, {user.username}</p>
+          <Button
+            onClick={logoutAndRouteChange}
+            size="sm"
+            style={{ maxWidth: "100px" }}
+            variant="danger"
+            className="ms-auto"
+          >
+            Sign Out
+          </Button>
+        </Stack>
+
+        <Container
+          style={{ marginBottom: "4rem", paddingLeft: "0", maxWidth: "30rem" }}
+        >
           <b>Change Password</b>
           <Col style={{ marginTop: "1rem" }}>
             <Form onSubmit={onSubmit}>
@@ -70,13 +83,6 @@ const UserAccount = () => {
             </Form>
           </Col>
         </Container>
-        <Button
-          onClick={logoutAndRouteChange}
-          size="sm"
-          style={{ maxWidth: "100px" }}
-        >
-          Sign Out
-        </Button>
       </Stack>
     </SimplePageLayout>
   );
