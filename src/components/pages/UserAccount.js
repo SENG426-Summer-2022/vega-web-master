@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Form, Button, Stack, Col, Container } from "react-bootstrap";
 import SimplePageLayout from "../templates/SimplePageLayout.js";
 import { UserContext } from "../../auth/UserProvider.js";
+import { changePassword } from "../../service/auth/PasswordManager.js";
 
 const UserAccount = () => {
   const { user, logout } = useContext(UserContext);
@@ -20,7 +21,6 @@ const UserAccount = () => {
       newPassword: e.target.newPassword.value,
       confirmPassword: e.target.confirmPassword.value,
     };
-    console.log({ data });
 
     // compare passwords
     if (data.newPassword !== data.confirmPassword) {
@@ -29,14 +29,7 @@ const UserAccount = () => {
     }
 
     // send to backend
-    const response = await fetch("/changepassword", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.jwt}`,
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await changePassword(data.newPassword, user.token);
 
     if (response.status === 200) {
       alert("Password changed successfully");
