@@ -17,7 +17,7 @@ import { UserProvider } from "./auth/UserProvider.js";
 import { UserContext } from "./auth/UserProvider.js";
 
 import UserAccount from "./components/pages/UserAccount.js";
-import Vault from "./components/pages/Vault";
+import VaultPage from "./components/pages/Vault";
 
 function App() {
   const { user, setUserInfo, logout } = useContext(UserContext);
@@ -35,7 +35,7 @@ function App() {
           <Route path="/account" component={UserAccount} />
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
-          <Route path="/vault" component={Vault} />
+          <Route path="/vault" component={VaultPage} />
         </Switch>
       </BrowserRouter>
     </UserProvider>

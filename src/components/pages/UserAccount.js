@@ -24,7 +24,7 @@ const UserAccount = (props) => {
           <p>Hello,</p>
           <p>{user.username}</p>
           <Button
-            onClick={() => goToVault}
+            onClick={() => goToVault()}
             size="sm"
             style={{ margin: "1rem" }}
           >
