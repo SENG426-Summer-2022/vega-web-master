@@ -5,6 +5,7 @@ import SecretRow from "../molecules/VaultSecretRow.js";
 
 import { UserContext } from "../../../auth/UserProvider.js";
 import VaultHeader from "../molecules/VaultHeader.js";
+import { getSecrets } from "../../../service/Vault/Secrets.js";
 
 export const Vault = () => {
   const { user } = useContext(UserContext);
@@ -16,11 +17,7 @@ export const Vault = () => {
 
   useEffect(() => {
     const getUserSecrets = async () => {
-      const response = await fetch(`http://localhost:8000/api/users/secrets`, {
-        headers: {
-          Authorization: `Bearer ${user.jwt}`,
-        },
-      });
+      const response = await getSecrets(user.jwt);
 
       if (response.ok) {
         const secrets = await response.json();
@@ -36,7 +33,7 @@ export const Vault = () => {
     <Container style={{ marginTop: "2rem" }}>
       <VaultHeader />
       {secrets.map((secret) => (
-        <SecretRow secret={secret} />
+        <SecretRow secret={secret} key={`secret-${secret.id}`} />
       ))}
     </Container>
   );
