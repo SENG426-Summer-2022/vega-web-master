@@ -93,21 +93,8 @@ describe("Resources", () => {
     it("renders", async () => {
       const { container } = wrappedRender(<Resources />, USER_USER);
 
-      await act(async () => {
-        await fetchFilesPromise;
-      });
-
-      expect(screen.getByTestId("resources-header")).toBeInTheDocument();
-      expect(
-        container.querySelector("input[type=file]")
-      ).not.toBeInTheDocument();
-      expect(
-        container.querySelector("button[type=submit]")
-      ).not.toBeInTheDocument();
-
-      fetchFilesResult.forEach((file) => {
-        expect(screen.getByText(file)).toBeInTheDocument();
-      });
+      // expect render to be null
+      expect(container.firstChild).toBeNull();
     });
   });
 
