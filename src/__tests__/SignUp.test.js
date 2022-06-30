@@ -116,5 +116,103 @@ describe("SignUp", () => {
         "Your account will soon be created"
       );
     });
+
+    it("displays an error message when not all fields are filled", async () => {
+      renderSignUp(EMPTY_USER);
+
+      await act(async () => {
+        await userEvent.type(
+          screen.getByLabelText("FIRST NAME"),
+          USER_USER_INFO.firstName
+        );
+        await userEvent.type(
+          screen.getByLabelText("LAST NAME"),
+          USER_USER_INFO.lastName
+        );
+
+        await userEvent.type(
+          screen.getByLabelText("PASSWORD"),
+          USER_USER_INFO.password
+        );
+        await userEvent.type(
+          screen.getByLabelText("CONFIRM PASSWORD"),
+          USER_USER_INFO.password
+        );
+
+        await userEvent.click(screen.getByText("Submit"));
+      });
+
+      expect(screen.getByText("Please fill all fields")).toBeInTheDocument();
+    });
+
+    it("displays error message when signup unsuccessful", async () => {
+      mockSignup.mockReturnValue(Promise.resolve({ error: "error" }));
+
+      renderSignUp(EMPTY_USER);
+      await act(async () => {
+        await userEvent.type(
+          screen.getByLabelText("FIRST NAME"),
+          USER_USER_INFO.firstName
+        );
+        await userEvent.type(
+          screen.getByLabelText("LAST NAME"),
+          USER_USER_INFO.lastName
+        );
+
+        await userEvent.type(
+          screen.getByLabelText("USERNAME"),
+          USER_USER_INFO.username
+        );
+        await userEvent.type(
+          screen.getByLabelText("PASSWORD"),
+          USER_USER_INFO.password
+        );
+        await userEvent.type(
+          screen.getByLabelText("CONFIRM PASSWORD"),
+          USER_USER_INFO.password
+        );
+
+        await userEvent.click(screen.getByText("Submit"));
+      });
+
+      expect(
+        screen.getByText(
+          "Failed To Process Your Registration Please Try Again Later"
+        )
+      ).toBeInTheDocument();
+    });
+
+    it("displays unauthorized message when signup unauthorized", async () => {
+      mockSignup.mockReturnValue(Promise.resolve({ code: 401 }));
+
+      renderSignUp(EMPTY_USER);
+      await act(async () => {
+        await userEvent.type(
+          screen.getByLabelText("FIRST NAME"),
+          USER_USER_INFO.firstName
+        );
+        await userEvent.type(
+          screen.getByLabelText("LAST NAME"),
+          USER_USER_INFO.lastName
+        );
+
+        await userEvent.type(
+          screen.getByLabelText("USERNAME"),
+          USER_USER_INFO.username
+        );
+        await userEvent.type(
+          screen.getByLabelText("PASSWORD"),
+          USER_USER_INFO.password
+        );
+        await userEvent.type(
+          screen.getByLabelText("CONFIRM PASSWORD"),
+          USER_USER_INFO.password
+        );
+
+        await userEvent.click(screen.getByText("Submit"));
+      });
+
+      expect(screen.getByText("Unauthorized Sign Up.")).toBeInTheDocument();
+    });
   });
 });
