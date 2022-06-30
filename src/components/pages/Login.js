@@ -13,6 +13,12 @@ const Login = () => {
   const [message, setMessage] = useState(false);
 
   function onSubmit(userInfo) {
+    // check if userInfo is valid
+    if (userInfo.username === "" || userInfo.password === "") {
+      setMessage("Please fill in all fields");
+      return;
+    }
+
     login(userInfo).then((res) => {
       if (typeof res.authorities == "object") {
         const role = res.authorities[0].authority;
