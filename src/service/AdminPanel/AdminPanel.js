@@ -1,6 +1,7 @@
 import {doPostFile, doGet} from '../BaseAPI.js';
 
 export function fetchuser(token){
+	console.log("In fetchUSer")
 	return doGet("http://localhost:8000/api/venus/admin/getusers", token)
 }
 

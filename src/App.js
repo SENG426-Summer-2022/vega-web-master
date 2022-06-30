@@ -17,14 +17,9 @@ import { UserProvider } from "./auth/UserProvider.js";
 import UserAccount from "./components/pages/UserAccount.js";
 
 function App() {
-  const user = {
-    username: "admin",
-    jwt: "eyabc",
-    role: "ROLE_ADMIN",
-  };
 
   return (
-    <UserProvider user={user}>
+    <UserProvider>
       <BrowserRouter>
         <Switch>
           <Route path="/" component={HomePageLayout} exact />

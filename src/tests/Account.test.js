@@ -1,49 +1,60 @@
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import HomePageLayout from '../components/templates/HomePageLayout.js';
-import Platform from '../components/pages/Platform.js';
-import Login from '../components/pages/Login.js';
-import NewsAndEvents from '../components/pages/NewsAndEvents.js';
-import Resources from '../components/pages/Resources.js';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import AdminPanel from '../components/pages/AdminPanel.js';
-import Leadership from '../components/pages/Leadership.js';
-import UserRegistration from '../components/pages/UserRegistration.js';
+import { fetchuser } from '../service/AdminPanel/AdminPanel.js';
 import {UserProvider} from '../auth/UserProvider.js';
-import UserAccount from '../components/pages/UserAccount.js';
-const jwt = require('jsonwebtoken');
 
-const token = jwt.sign("admin@venus.com", "test");
+const EMPTY_USER = {
+    username: "",
+    jwt: "",
+    role: "",
+};
+
 const ADMIN_USER = {
-    username: "admin@venus.com",
-    jwt: token,
-    role: "ROLE_ADMIN"
-}
-const setUserInfo = () => {};
-const logout = () => {};
+    username: "admin",
+    jwt: "eyabc",
+    role: "ROLE_ADMIN",
+};
 
-function renderApp(user) {
-    return render(
-        <UserProvider user={user}> 
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/" component={HomePageLayout} exact />
-                    <Route path="/contactus" component={UserRegistration} exact />
-                    <Route path="/leadership" component={Leadership} exact />
-                    <Route path="/news" component={NewsAndEvents} />
-                    <Route path="/platform" component={Platform} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/account" component={UserAccount} />
-                    <Route path="/resources" component={Resources} />
-                    <Route path="/adminpanel" component={AdminPanel} />
-                </Switch>
-            </BrowserRouter>
+const USER_USER = {
+    username: "user",
+    jwt: "blah",
+    role: "ROLE_USER",
+};
+
+test('Admin can change user roles', async () => {
+    const users = [ {username: "admin", role: "ROLE_ADMIN", firstName: "Admin", lastName: "Smith"} ];
+    jest.spyOn(React, 'useEffect').mockImplementation((f) => f());
+    // jest.mock("../service/AdminPanel/AdminPanel", () => {
+    //     return {
+    //       fetchuser: jest.fn(() => Promise.resolve(users))
+    //     };
+    //   });
+    render(
+        <UserProvider user={ADMIN_USER}>
+            <AdminPanel users={users}/>
         </UserProvider>
     );
-  }
-
-test('Admin account creation', async () => {
-    //console.log(ADMIN_USER);
-    renderApp(ADMIN_USER);
-    const linkElement = screen.getByText(/Account/i);
-    expect(linkElement).toBeInTheDocument();
+    expect(screen.getByText(/First Name/i)).toBeInTheDocument()
+    expect(screen.getByText(/Smith/i)).toBeInTheDocument()
 });
+
+test('User cannot change user roles', async () => {
+    const users = [ {username: "admin", role: "ROLE_ADMIN", firstName: "Admin", lastName: "Smith"} ];
+    render(
+        <UserProvider user={USER_USER}>
+            <AdminPanel users={users}/>
+        </UserProvider>
+    );
+    expect(screen.getByText(/First Name/i)).toBeInTheDocument()
+    expect(screen.getByText(/Smith/i)).toBeInTheDocument()
+});
+
+// test('Non-signed in users cannot change user roles', async () => {
+//     render(
+//         <UserProvider user={EMPTY_USER}>
+//             <AdminPanel/>
+//         </UserProvider>
+//     );
+//     expect(screen.getByText(/First Name/i)).not.toBeInTheDocument()
+// });

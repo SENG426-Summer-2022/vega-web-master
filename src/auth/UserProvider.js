@@ -10,7 +10,6 @@ const UserProvider = (props) => {
   const [user, setUser] = useState({ username: "", jwt: "", role: "" });
 
   useEffect(() => {
-    console.log(props);
     const username =
       props.user.username || window.localStorage.getItem("username");
     const jwt = props.user.jwt || window.localStorage.getItem("jwt");
@@ -32,7 +31,6 @@ const UserProvider = (props) => {
       jwt: jwt,
       role: role,
     }));
-    console.log(user);
     window.localStorage.setItem("username", name);
     window.localStorage.setItem("jwt", jwt);
     window.localStorage.setItem("role", role);

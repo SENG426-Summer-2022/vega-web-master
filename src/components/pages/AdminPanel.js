@@ -7,11 +7,14 @@ import {Form, Button, Row, Col, Table} from 'react-bootstrap';
 
 const AdminPanel = (props) => {
 	const {user} = useContext(UserContext);
-	const [listOfUsers, setUsers] = useState([]);
+	console.log(props.users);
+	const [listOfUsers, setUsers] = useState(props.users || []);
 	useEffect(() => {
 			console.log("Inside useEffect")
 			fetchuser(user.jwt)
 				.then(resp => {
+					console.log("inside then")
+					console.log(resp)
 					setUsers(resp)
 					});
 		
@@ -35,6 +38,7 @@ const AdminPanel = (props) => {
 	}
 
 	const listOfUsersHTML = () => {
+		console.log(listOfUsers)
 		if(listOfUsers.length){
 			return listOfUsers.map((user) => <tr><td>{user.firstName}</td><td>{user.lastName}</td><td>{user.username}</td><td onClick={() => enableUser(user.username)}>
 				<a href="#">Enable User</a></td>
