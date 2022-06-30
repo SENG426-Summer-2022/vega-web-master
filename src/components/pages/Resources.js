@@ -57,7 +57,11 @@ const Resources = (props) => {
     }
   };
 
-  if (user.role == "ROLE_ADMIN") {
+  if (user.role === "ROLE_USER") {
+    return null;
+  }
+
+  if (user.role === "ROLE_ADMIN") {
     uploadHTML = (
       <Row>
         <Col className="mx-auto" xs={6}>
