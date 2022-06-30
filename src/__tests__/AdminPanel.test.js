@@ -1,6 +1,6 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
-import userEvent from '@testing-library/user-event';
+import userEvent from "@testing-library/user-event";
 
 import AdminPanel from "../components/pages/AdminPanel.js";
 import { UserProvider } from "../auth/UserProvider.js";
@@ -49,8 +49,8 @@ const mockChangeAccountRole = jest.fn();
 jest.mock("../service/AdminPanel/AdminPanel", () => ({
   fetchuser: (jwt) => mockFetchuser(jwt),
   enableAccount: (username, jwt) => mockEnableAccount(username, jwt),
-  changeAccountRole: (username, role, jwt) => 
-    mockChangeAccountRole(username, role, jwt)    
+  changeAccountRole: (username, role, jwt) =>
+    mockChangeAccountRole(username, role, jwt),
 }));
 
 function renderAdminPanel(user, users = fetchusersResult) {
@@ -85,7 +85,7 @@ describe("AdminPanel", () => {
   });
 
   describe("Change Role", () => {
-    test("Admin can change user roles", async () => {
+    it("allows Admin to change user roles", async () => {
       jest.spyOn(React, "useEffect").mockImplementation((f) => f());
 
       renderAdminPanel(ADMIN_USER);
@@ -93,7 +93,7 @@ describe("AdminPanel", () => {
 
       const select = screen.getAllByDisplayValue("Open this select menu")[0];
 
-      userEvent.selectOptions(select, 'ROLE_USER');
+      userEvent.selectOptions(select, "ROLE_USER");
       expect(mockChangeAccountRole).toBeCalledWith(
         fetchusersResult[0].username,
         "ROLE_USER",
@@ -120,7 +120,7 @@ describe("AdminPanel", () => {
   });
 
   describe("Enable User", () => {
-    test("Admin can enable user", async () => {
+    it("allows Admin to enable user", async () => {
       mockEnableAccount.mockReturnValue(enableAccountPromise);
 
       renderAdminPanel(ADMIN_USER);
