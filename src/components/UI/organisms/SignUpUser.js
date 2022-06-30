@@ -41,36 +41,41 @@ const SignUpUser = ({ onSubmit }) => {
       <Col className="mx-auto" xs={6}>
         <Form onSubmit={submitForm}>
           <Form.Group className="mb-3">
-            <Form.Label>FIRST NAME</Form.Label>
+            <Form.Label htmlFor="firstname">FIRST NAME</Form.Label>
             <Form.Control
+              id="firstname"
               type="text"
               onChange={(e) => setFirstName(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>LAST NAME</Form.Label>
+            <Form.Label htmlFor="lastname">LAST NAME</Form.Label>
             <Form.Control
+              id="lastname"
               type="text"
               onChange={(e) => setLastName(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>USERNAME</Form.Label>
+            <Form.Label htmlFor="username">USERNAME</Form.Label>
             <Form.Control
+              id="username"
               type="text"
               onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>PASSWORD</Form.Label>
+            <Form.Label htmlFor="password">PASSWORD</Form.Label>
             <Form.Control
+              id="password"
               type="PASSWORD"
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>CONFIRM PASSWORD</Form.Label>
+            <Form.Label htmlFor="confirmPassword">CONFIRM PASSWORD</Form.Label>
             <Form.Control
+              id="confirmPassword"
               type="PASSWORD"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

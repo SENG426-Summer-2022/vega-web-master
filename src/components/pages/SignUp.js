@@ -2,16 +2,9 @@ import { useState } from "react";
 import UserRegistrationPageLayout from "../templates/UserRegistrationPageLayout.js";
 import SignUpUser from "../UI/organisms/SignUpUser.js";
 import { signup } from "../../service/auth/AuthenticationManager.js";
+import CenteredHeader from "../UI/atoms/CenteredHeader.js";
 
 import { Redirect } from "react-router-dom";
-
-const CenteredHeader = (props) => {
-  return (
-    <div className="text-center" {...props}>
-      <h1>{props.text}</h1>
-    </div>
-  );
-};
 
 const SignUp = () => {
   const [created, setCreated] = useState(false);
