@@ -11,9 +11,9 @@ const UserProvider = (props) => {
 
   useEffect(() => {
     const username =
-      props.user.username || window.localStorage.getItem("username");
-    const jwt = props.user.jwt || window.localStorage.getItem("jwt");
-    const role = props.user.role || window.localStorage.getItem("role");
+      props.user?.username || window.localStorage.getItem("username");
+    const jwt = props.user?.jwt || window.localStorage.getItem("jwt");
+    const role = props.user?.role || window.localStorage.getItem("role");
     if (username && jwt) {
       setUser({
         username: username,
