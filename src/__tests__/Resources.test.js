@@ -93,6 +93,10 @@ describe("Resources", () => {
     it("renders", async () => {
       const { container } = wrappedRender(<Resources />, USER_USER);
 
+      await act(async () => {
+        await fetchFilesPromise;
+      });
+
       // expect render to be null
       expect(container.firstChild).toBeNull();
     });
