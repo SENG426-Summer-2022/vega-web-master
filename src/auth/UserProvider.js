@@ -25,7 +25,6 @@ const UserProvider = (props) => {
 
   // Login updates the user data with a name parameter
   const setUserInfo = (name, jwt, role) => {
-    console.log("SetUserInfo called");
     setUser((user) => ({
       username: name,
       jwt: jwt,
@@ -51,8 +50,6 @@ const UserProvider = (props) => {
     window.localStorage.setItem("jwt", "");
     window.localStorage.setItem("role", "");
   };
-  console.log("Rendering context provider for user");
-  console.log(user);
   return (
     <UserContext.Provider value={{ user, setUserInfo, logout }}>
       {props.children}
