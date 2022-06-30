@@ -17,12 +17,16 @@ const Resources = (props) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [content, setContent] = useState("");
   var uploadHTML;
+
   useEffect(() => {
+    if (user.role === "ROLE_USER") {
+      return;
+    }
     fetchFiles(user.jwt).then((resp) => {
       setDataLoaded(true);
       setFiles(resp);
     });
-  }, [user]);
+  }, [user.jwt, user.role]);
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
