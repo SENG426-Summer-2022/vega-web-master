@@ -43,8 +43,8 @@ const AdminPanel = (props) => {
 
   const listOfUsersHTML = () => {
     if (listOfUsers.length) {
-      return listOfUsers.map((user) => (
-        <tr>
+      return listOfUsers.map((user, i) => (
+        <tr key={`user-${i}`}>
           <td>{user.firstName}</td>
           <td>{user.lastName}</td>
           <td>{user.username}</td>
