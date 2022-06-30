@@ -13,7 +13,7 @@ const SignUp = () => {
   function onSubmit(userInfo) {
     signup(userInfo).then((res) => {
       console.log(JSON.stringify(res));
-      if (res.errno) {
+      if (res.error) {
         setMessage(
           "Failed To Process Your Registration Please Try Again Later"
         );
