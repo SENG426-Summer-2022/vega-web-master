@@ -5,14 +5,15 @@ const UserContext = createContext({
   logout: () => {}
 });
 
-const UserProvider = ({children}) => {
+const UserProvider = (props, {children}) => {
 	// User is the name of the "data" that gets stored in context
   	const [user, setUser] = useState({ username: '', jwt:'' , role: ''});
 
   	useEffect(() => {
-      const username =  window.localStorage.getItem("username");
-      const jwt =  window.localStorage.getItem("jwt");
-      const role =  window.localStorage.getItem("role");
+      console.log(props);
+      const username =  props.user.username || window.localStorage.getItem("username");
+      const jwt =  props.user.jwt || window.localStorage.getItem("jwt");
+      const role =  props.user.role || window.localStorage.getItem("role");
       if(username && jwt){
         setUser({
           username: username,
@@ -51,9 +52,9 @@ const UserProvider = ({children}) => {
       window.localStorage.setItem("jwt","");
       window.localStorage.setItem("role","");
   	};
-    console.log("Rendering context provider");
+    console.log("Rendering context provider for user");
+    console.log(user);
 	return (
-
     	<UserContext.Provider value={{ user, setUserInfo, logout }}>
       		{children}
     	</UserContext.Provider>
