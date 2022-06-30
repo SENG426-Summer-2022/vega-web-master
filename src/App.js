@@ -17,7 +17,6 @@ import Leadership from './components/pages/Leadership.js';
 import UserRegistration from './components/pages/UserRegistration.js';
 import {UserProvider} from './auth/UserProvider.js';
 import {UserContext} from './auth/UserProvider.js';
-
 import UserAccount from './components/pages/UserAccount.js';
 
 function App() {
@@ -25,8 +24,13 @@ function App() {
   const {user, setUserInfo, logout} = useContext(UserContext);
 
   return (
+<<<<<<< HEAD
    <UserProvider value ={user, setUserInfo, logout}>
    <BrowserRouter>
+=======
+   <UserProvider value ={{user, setUserInfo, logout}}> 
+      <BrowserRouter>
+>>>>>>> 316fa37c (testing)
         <Switch>
         	<Route path="/" component={HomePageLayout} exact />
         	<Route path="/contactus" component={UserRegistration} exact />
@@ -40,7 +44,11 @@ function App() {
           <Route path="/adminpanel" component={AdminPanel} />
           <Route path="/aboutus" component={AboutUs} />
         </Switch>
+<<<<<<< HEAD
         </BrowserRouter>
+=======
+      </BrowserRouter>
+>>>>>>> 316fa37c (testing)
     </UserProvider>
   );
 }
