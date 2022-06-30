@@ -6,18 +6,15 @@ import {login} from '../../service/auth/AuthenticationManager.js';
 import {UserContext} from '../../auth/UserProvider.js';
 import  { Redirect } from 'react-router-dom'
 
-const Login = (props) => {
+const Login = () => {
 
-	const { context } = props;
-	const {user, setUserInfo,logout} = useContext(UserContext);
+	const {user, setUserInfo} = useContext(UserContext);
 	const [auth, setAuth] = useState(false);
 	const [message, setMessage] = useState(false);
 	console.log("Userinfo", user);
 	function onSubmit(userInfo){
 		login(userInfo)
 			.then(res => {
-				console.log("Response", res);
-				console.log(res.jwt);
 				if (typeof (res.authorities) == 'object') {
 				    const role = res.authorities[0].authority;
 				    setUserInfo(userInfo.username, res.jwt, role);

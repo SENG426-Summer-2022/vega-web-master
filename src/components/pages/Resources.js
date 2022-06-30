@@ -14,8 +14,6 @@ const Resources = (props) => {
 	const [content, setContent] = useState('');
 	var uploadHTML;
 	useEffect(() => {
-		console.log("JWT is",user.jwt, dataLoaded)
-			console.log("Inside useEffect")
 			fetchFiles(user.jwt)
 				.then(resp => {
 					setDataLoaded(true);
@@ -40,7 +38,6 @@ const Resources = (props) => {
 	}
 
 	const fetchFileData = (name) => {
-		console.log(user.jwt)
 		fetchData(name,user.jwt)
 			.then(res => {
 				setContent(res);
