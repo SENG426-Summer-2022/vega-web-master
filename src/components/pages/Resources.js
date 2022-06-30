@@ -16,6 +16,8 @@ const Resources = (props) => {
   const [listOfFiles, setFiles] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [content, setContent] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   var uploadHTML;
 
   useEffect(() => {
@@ -23,6 +25,14 @@ const Resources = (props) => {
       return;
     }
     fetchFiles(user.jwt).then((resp) => {
+      if (resp.code === 401) {
+        setErrorMessage("Unauthorized.");
+        return;
+      }
+      if (resp.error) {
+        setErrorMessage("Could not fetch files.");
+        return;
+      }
       setDataLoaded(true);
       setFiles(resp);
     });
@@ -37,12 +47,20 @@ const Resources = (props) => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     fileUploader(formData, user.jwt).then((res) => {
+      if (res.error) {
+        setErrorMessage("Failed to upload. Please try again later.");
+        return;
+      }
       console.log("Response", res);
     });
   };
 
   const fetchFileData = (name) => {
     fetchData(name, user.jwt).then((res) => {
+      if (res.error) {
+        setErrorMessage("Failed to get data. Please try again later.");
+        return;
+      }
       setContent(res);
     });
   };
@@ -92,6 +110,11 @@ const Resources = (props) => {
       </Row>
       <Row>
         <Col>{content}</Col>
+      </Row>
+      <Row>
+        {errorMessage && (
+          <p className="alert-danger text-center">{errorMessage}</p>
+        )}
       </Row>
     </SimplePageLayout>
   );
