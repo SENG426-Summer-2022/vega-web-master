@@ -1,11 +1,10 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import {login} from '../services/LoginRequestAPI.js';
+import {login, signup} from '../services/LoginRequestAPI.js';
 
-function authModule(req, res) {
+export function authModule(req, res) {
 	if (req.method == 'POST') {
     	const userInfo = req.body;
     	console.log(userInfo);
+        console.log("Authenticating User");
     	login("http://localhost:8080/venus/authenticate", userInfo)
     		.then(response => {
     			console.log("Response", response);
@@ -18,4 +17,22 @@ function authModule(req, res) {
     }
 }
 
-export default authModule;
+// TODO Get sign up hooked up to the spring backend
+export function signupModule(req, res) {
+	if (req.method == 'POST') {
+    	const userInfo = req.body;
+    	console.log(userInfo);
+        console.log("Registering User");
+        signup("http://localhost:8080/venus/register", userInfo)
+            .then(response => {
+                console.log("Response", response);
+                res.send(response);
+            })
+            .catch(error => {
+                console.log("ERROR:", error);
+                res.send(error);
+            })
+    }
+}
+
+export default { authModule, signupModule };
