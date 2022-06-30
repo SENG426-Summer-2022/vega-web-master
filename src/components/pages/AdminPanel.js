@@ -61,6 +61,7 @@ const AdminPanel = (props) => {
             <Form.Select
               aria-label={`Select role for ${user.username}`}
               onChange={(evt) => changeRole(evt, user.username)}
+              value={user.role === "ROLE_STAFF" ? "STAFF" : "USER"}
             >
               <option>Open this select menu</option>
               <option value="ROLE_STAFF">STAFF</option>
