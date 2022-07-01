@@ -11,6 +11,7 @@ import Login from './components/pages/Login.js';
 import SignUp from './components/pages/SignUp.js';
 import NewsAndEvents from './components/pages/NewsAndEvents.js';
 import AboutUs from './components/pages/AboutUs.js';
+import AdminUserManagement from './components/pages/AdminUserManagement.js';
 import Resources from './components/pages/Resources.js';
 import AdminPanel from './components/pages/AdminPanel.js';
 import Leadership from './components/pages/Leadership.js';
@@ -39,6 +40,7 @@ function App() {
           <Route path="/resources" component={Resources} />
           <Route path="/adminpanel" component={AdminPanel} />
           <Route path="/aboutus" component={AboutUs} />
+          <Route path="/usermanagement" component={AdminUserManagement} />
         </Switch>
         </BrowserRouter>
     </UserProvider>
