@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import {fetchusers, enableAccount, changeRole} from '../services/AdminPanelAPI.js';
+import {fetchusers, enableAccount, changeRole, changeEmail, changeUsername, deleteAccount} from '../services/AdminPanelAPI.js';
 import fileUpload from 'express-fileupload';
 
 let router = express();
@@ -55,11 +55,27 @@ router.get("/changerole", (req, res) => {
 })
 
 //Adding new features
+
 router.get("/changeemail", (req, res) => {
-	console.log("Request: Change Role")
+	console.log("Request: Change Email")
 	const {username} = req.query;
-	const {role} = req.query;
-	changeRole(`http://localhost:8080/venus/admin/changerole?username=${username}&role=${role}`, req.headers)
+	const {email} = req.query;
+	changeEmail(`http://localhost:8080/venus/admin/changeemail?username=${username}&email=${email}`, req.headers)
+	.then(response => {
+		console.log("Response", response);
+		res.send(response);
+	})
+	.catch(error => {
+		console.log("ERROR:", error);
+		res.send(error)
+	})
+})
+
+router.get("/changeusername", (req, res) => {
+	console.log("Request: Change Username")
+	const {username} = req.query;
+	const {newUsername} = req.query;
+	changeUsername(`http://localhost:8080/venus/admin/changeusername?username=${username}&role=${newUsername}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
