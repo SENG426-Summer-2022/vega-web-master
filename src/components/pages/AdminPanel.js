@@ -56,8 +56,9 @@ const AdminPanel = (props) => {
 						<td>First Name</td>
 						<td>Last Name</td>
 						<td>Username</td>
-						<td></td>
-						<td></td>
+						<td>Enable User</td>
+						<td>Change Role</td>
+						<td>Manage</td>
 					</tr>
 				</thead>
 				<tbody>
