@@ -54,4 +54,20 @@ router.get("/changerole", (req, res) => {
 	})
 })
 
+//Adding new features
+router.get("/changeemail", (req, res) => {
+	console.log("Request: Change Role")
+	const {username} = req.query;
+	const {role} = req.query;
+	changeRole(`http://localhost:8080/venus/admin/changerole?username=${username}&role=${role}`, req.headers)
+	.then(response => {
+		console.log("Response", response);
+		res.send(response);
+	})
+	.catch(error => {
+		console.log("ERROR:", error);
+		res.send(error)
+	})
+})
+
 export default router;
