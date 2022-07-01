@@ -34,6 +34,17 @@ const AdminPanel = (props) => {
 			console.log("Changed Roles"))
 	}
 
+	const manageUser = (username) => {
+		console.log("Redirect to UserManagement")
+		return(
+			<Redirect to={{
+				pathname: '../usermanagement',
+				state: { usernamedata: username }
+			}}/>);
+
+
+	}
+
 	const listOfUsersHTML = () => {
 		if(listOfUsers.length){
 			return listOfUsers.map((user) => <tr><td>{user.firstName}</td><td>{user.lastName}</td><td>{user.username}</td><td onClick={() => enableUser(user.username)}>
@@ -44,7 +55,11 @@ const AdminPanel = (props) => {
 					    <option value="ROLE_STAFF">STAFF</option>
 					    <option value="ROLE_USER">USER</option>
   					</Form.Select>
-				</td></tr>) 
+				</td>
+				<td>
+					<Button variant = "primary" onClick={() => manageUser(user.username)}>Manage User</Button>
+				</td>
+			</tr>) 
 		}
 	}
 
