@@ -1,9 +1,11 @@
 import FormPageLayout from '../templates/FormPageLayout.js';
+import ContactUsForm from '../UI/organisms/ContactUsForm.js';
 
-const UserRegistration = (props) => {
+const ContactUs = (props) => {
 	return (
 		<FormPageLayout>
+			<ContactUsForm />
 		</FormPageLayout>
 		);
 }
-export default UserRegistration;
+export default ContactUs;
