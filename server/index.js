@@ -14,6 +14,7 @@ const env = config();
 //app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
+app.disable("x-powered-by");
 
 if (process.env.NODE_ENV === "development") {
   var corsOptions = {
