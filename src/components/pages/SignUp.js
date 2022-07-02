@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserRegistrationPageLayout from "../templates/UserRegistrationPageLayout.js";
+import FormPageLayout from "../templates/FormPageLayout.js";
 import SignUpUser from "../UI/organisms/SignUpUser.js";
 import { signup } from "../../service/auth/AuthenticationManager.js";
 import CenteredHeader from "../UI/atoms/CenteredHeader.js";
@@ -31,11 +31,11 @@ const SignUp = () => {
 
   if (!created) {
     return (
-      <UserRegistrationPageLayout>
+      <FormPageLayout>
         <CenteredHeader text="Sign Up" style={{ marginBottom: "2rem" }} />
         <SignUpUser onSubmit={onSubmit} />
         <p className="alert-danger text-center">{message}</p>
-      </UserRegistrationPageLayout>
+      </FormPageLayout>
     );
   } else {
     return <Redirect to="/login" />;
