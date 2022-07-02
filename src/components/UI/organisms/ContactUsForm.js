@@ -1,5 +1,5 @@
 import {Form, Button, Col} from 'react-bootstrap';
-import {useState} from "react"
+import {useState, useEffect} from "react"
 
 const checkNameValidity = () => {
     let nameIsValid = true;
@@ -38,31 +38,64 @@ const preventEvents = (event) => {
 }
 
 const ContactUsForm = (props) => {
-	const [validated, setValidated] = useState(false);
+	const [checked, setChecked] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
-	const handleSubmit = (event) => {
+  const onChange = () => {
+    setSubmitSuccess(false); 
+    setSubmitError(false);
+    setChecked(false);
+  }
+
+	const handleSubmit = async (event) => {
     // remove is-invalid class from all fields
+    setSubmitSuccess(false);
+    setChecked(false);
+    preventEvents(event);
     resetValidation();
 
-	  const form = event.currentTarget;
-	  if (form.checkValidity() === false) {
-      preventEvents(event);
-	  }
-
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      setChecked(true);
+      return;
+    }
+    
     const nameIsValid = checkNameValidity();
     const messageIsValid = checkMessageValidity();
     if (nameIsValid && messageIsValid) {
-      setValidated(true);
-      return;
+      // submit form
+      // collect name, email, and message
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const result = await props.onSubmit(name, email, message);
+      console.log(result)
+      if (result.success) {
+        // set success to true
+        setSubmitSuccess(true);
+      } else {
+        setSubmitError(true);
+      }
+      setChecked(true);
     }
 
     // invalid
-    preventEvents(event);
 	};
 
 	return (
       <Col className="mx-auto" xs={6}>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+
+        {submitSuccess && <div className="alert alert-success">Message sent successfully</div>}
+        {submitError && <div className="alert alert-danger">Message failed to send</div>}
+
+        <Form 
+          noValidate
+          id="contact-form"
+          validated={checked}
+          onSubmit={handleSubmit}
+          onChange={onChange}
+          >
       			<Form.Group className="mb-3" controlId="name">
         			<Form.Label>NAME</Form.Label>
         			<Form.Control required type="text" />
@@ -70,6 +103,7 @@ const ContactUsForm = (props) => {
 						Please provide your name. Only letters are allowed.
 					</Form.Control.Feedback>
       			</Form.Group>
+
       			<Form.Group className="mb-3" controlId="email">
         			<Form.Label>EMAIL</Form.Label>
         			<Form.Control required type="email"  />
@@ -77,6 +111,7 @@ const ContactUsForm = (props) => {
 						Please provide your email.
 					</Form.Control.Feedback>
       			</Form.Group>
+
       			<Form.Group className="mb-3" controlId="message">
         			<Form.Label>MESSAGE</Form.Label>
         			<Form.Control required as="textarea" rows={3} />
@@ -84,6 +119,7 @@ const ContactUsForm = (props) => {
 						Please provide a message. Max 1000 characters.
 					</Form.Control.Feedback>
       			</Form.Group>
+
       			<Button variant="primary" type="submit">
         			Submit
       			</Button>
