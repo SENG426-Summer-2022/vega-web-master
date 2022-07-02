@@ -20,7 +20,7 @@ const AdminUserManagement = (props) => {
         //Get new Username
         var newUserFirstname = prompt("enter new Firstname")
         var newUserLastname = prompt("enter new Lastname")
-        updateAccountusername(username, newUserFirstname, newUserLastname user.jwt)
+        updateAccountusername(username, newUserFirstname, newUserLastname, user.jwt)
 
     }
 
