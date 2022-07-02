@@ -16,6 +16,8 @@ export function changeRole(url,headers){
 	return doGet(url, headers['authorization'])
 }
 
+//New features:
+
 export function deleteAccount(url,headers){
 	console.log(headers);
 	console.log(url);

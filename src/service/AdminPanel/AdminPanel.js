@@ -13,13 +13,14 @@ export function changeAccountRole(username, role, token){
 }
 
 export function deleteAccount(username, token){
-	return
+	console.log("In AdminPAnel: Deleting user" + username)
+	return doGet("http://localhost:8000/api/venus/admin/deleteuser?username="+username, token)
 }
 
 export function updateAccountEmail(username, newEmail, token){
 	return doGet("http://localhost:8000/api/venus/admin/changeemail?username="+username+"&newemail="+newEmail, token)
 }
 
-export function updateAccountusername(username, newUsername, token){
-	return doGet("http://localhost:8000/api/venus/admin/changeusername?username="+username+"&newusername="+newUsername, token)
+export function updateAccountusername(username, newUserFirstname, newUserLastname,token){
+	return doGet("http://localhost:8000/api/venus/admin/changeusername?username="+username+"&newfirstname="+newUserFirstname+"&newlastname="+newUserLastname, token)
 }

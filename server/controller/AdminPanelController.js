@@ -56,11 +56,25 @@ router.get("/changerole", (req, res) => {
 
 //Adding new features
 
+router.get("/deleteuser", (req, res) => {
+	console.log("Request: Delete User")
+	const {username} = req.query;
+	deleteAccount(`http://localhost:8080/venus/admin/deleteuser?username=${username}`, req.headers)
+	.then(response => {
+		console.log("Response", response);
+		res.send(response);
+	})
+	.catch(error => {
+		console.log("ERROR:", error);
+		res.send(error)
+	})
+})
+
 router.get("/changeemail", (req, res) => {
 	console.log("Request: Change Email")
 	const {username} = req.query;
-	const {email} = req.query;
-	changeEmail(`http://localhost:8080/venus/admin/changeemail?username=${username}&email=${email}`, req.headers)
+	const {newemail} = req.query;
+	changeEmail(`http://localhost:8080/venus/admin/changeemail?username=${username}&email=${newemail}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
@@ -74,8 +88,9 @@ router.get("/changeemail", (req, res) => {
 router.get("/changeusername", (req, res) => {
 	console.log("Request: Change Username")
 	const {username} = req.query;
-	const {newUsername} = req.query;
-	changeUsername(`http://localhost:8080/venus/admin/changeusername?username=${username}&role=${newUsername}`, req.headers)
+	const {newUserFirstname} = req.query;
+	const {newUserLastname} = req.query;
+	changeUsername(`http://localhost:8080/venus/admin/changeusername?username=${username}&newusername=${newUserFirstname}&newusername=${newUserLastname}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);

@@ -8,30 +8,34 @@ const AdminUserManagement = (props) => {
 	const {user} = useContext(UserContext);
 
     const DeleteUser = (username) => {
-        console.log(" About to delete User!")
+        console.log("About to delete User " + username)
+        console.log(user.jwt)
         deleteAccount(username, user.jwt)
 
     }
 
     const ChangeUserName = (username) => {
-        console.log(" About to change User's username")
+        console.log(" About to change User's Name")
+        console.log(user.jwt)
         //Get new Username
-        var newUsername = ""
-        updateAccountusername(username, newUsername, user.jwt)
+        var newUserFirstname = prompt("enter new Firstname")
+        var newUserLastname = prompt("enter new Lastname")
+        updateAccountusername(username, newUserFirstname, newUserLastname user.jwt)
 
     }
 
     const ChangeUserEmail = (username) => {
         console.log(" About to change User's email")
+        console.log(user.jwt)
         //Get new Email
-        var newEmail = ""
+        var newEmail = prompt("enter new email")
         updateAccountEmail(username, newEmail, user.jwt)
     }
 
     // Tried this but didn't work: 
     // <h3>User Management for {this.props.location.state.usernamedata} </h3>
 
-    var username = "" // Temporary, remove after getting a input method
+    var username = "francisp@venus.com" // Temporary, remove after getting a input method
     
     return(
         <SimplePageLayout>
@@ -44,8 +48,8 @@ const AdminUserManagement = (props) => {
             </div>
             <div className={"section2"}>
                 <p></p>
-                <p>Change User Name </p>
-                <Button variant={"primary"} onClick={() => ChangeUserName(username)}>Change User Name </Button>
+                <p>Change User's Name </p>
+                <Button variant={"primary"} onClick={() => ChangeUserName(username)}>Change User's Name </Button>
                 <p></p>
             </div>
             <div className={"section3"}>
