@@ -11,7 +11,7 @@ const VenusNavBar = (props) => {
   var userreport;
 
   if(user.username && user.jwt){
-    logout = <Nav.Link href="/account">Logout</Nav.Link>;
+    logout = <Nav.Link href="/account">Account</Nav.Link>;
   } else{
     logout = <Nav.Link href="/login">Login/SignUp</Nav.Link>;
   }
