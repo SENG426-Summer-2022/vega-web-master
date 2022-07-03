@@ -26,6 +26,5 @@ export function updateAccountEmail(username, newEmail, token){
 }
 
 export function updateAccountusername(username, newUserFirstname, newUserLastname,token){
-	//console.log("In AdminPAnel: Changing user name to" + newUserFirstname + " " + newUserLastname )
 	return doGet("http://localhost:8000/api/venus/admin/changeusername?username="+username+"&newfirstname="+newUserFirstname+"&newlastname="+newUserLastname, token)
 }
