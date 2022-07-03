@@ -1,7 +1,7 @@
 import SimplePageLayout from "../templates/SimplePageLayout";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../auth/UserProvider";
-import {changeAccountRole, enableAccount, fetchuser, deleteAccount, updateAccountEmail, updateAccountusername} from "../../service/AdminPanel/AdminPanel";
+import {deleteAccount, updateAccountEmail, updateAccountusername} from "../../service/AdminPanel/AdminPanel";
 import {Form, Table, Button} from "react-bootstrap";
 
 const AdminUserManagement = (props) => {     
@@ -11,17 +11,27 @@ const AdminUserManagement = (props) => {
     const DeleteUser = (username) => {
         console.log("About to delete User " + username)
         console.log(user.jwt)
-        deleteAccount(username, user.jwt)
+        deleteAccount(username, user.jwt).then(
+            (res) => {
+                console.log(res)
+                alert(res)
+            }
+        )
 
     }
 
     const ChangeUserName = (username) => {
         console.log(" About to change User's Name")
         console.log(user.jwt)
-        //Get new Username
+        //Get new Names
         var newUserFirstname = prompt("enter new Firstname")
         var newUserLastname = prompt("enter new Lastname")
-        updateAccountusername(username, newUserFirstname, newUserLastname, user.jwt)
+        updateAccountusername(username, newUserFirstname, newUserLastname, user.jwt).then(
+            (res) => {
+                console.log(res)
+                alert(res)
+            }
+        )
 
     }
 
@@ -29,12 +39,14 @@ const AdminUserManagement = (props) => {
         console.log(" About to change User's email")
         console.log(user.jwt)
         //Get new Email
-        var newEmail = prompt("enter new email")
-        updateAccountEmail(username, newEmail, user.jwt)
+        var newEmail = prompt("enter new Email")
+        updateAccountEmail(username, newEmail, user.jwt).then(
+            (res) => {
+                console.log(res)
+                alert(res)
+            }
+        )
     }
-
-    // Tried this but didn't work: 
-    // <h3>User Management for {this.props.location.state.usernamedata} </h3>
     
     return(
         <SimplePageLayout>
@@ -62,7 +74,7 @@ const AdminUserManagement = (props) => {
                 <p>Add new User </p>
                 <Button variant={"primary"} href={"../signup"}> Add User </Button>
                 <p></p>
-        </div>
+            </div>
         </SimplePageLayout>
     )
 }

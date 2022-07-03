@@ -8,7 +8,6 @@ const VenusNavBar = (props) => {
 	var logout;
   var resources;
   var adminpanel;
-  var userreport;
 
   if(user.username && user.jwt){
     console.log(user);
@@ -23,8 +22,6 @@ const VenusNavBar = (props) => {
 
   if(user.role == "ROLE_ADMIN"){
     adminpanel = <Nav.Link href="/adminpanel">Admin</Nav.Link>
-    //Adding "Report" to link to Admin Report feature
-    userreport = <Nav.Link href="/report">Report</Nav.Link>
   }
 
   return (
@@ -41,7 +38,6 @@ const VenusNavBar = (props) => {
                 {logout}
               </Nav.Item>
                 {adminpanel}
-                {userreport}
     			</Nav>
     		</Container>
   		</Navbar>
