@@ -21,7 +21,7 @@ const UserProvider = (props) => {
         role: role,
       });
     }
-  }, []);
+  }, [props.user?.jwt, props.user?.username, props.user?.role]);
 
   // Login updates the user data with a name parameter
   const setUserInfo = (name, jwt, role) => {
@@ -30,14 +30,8 @@ const UserProvider = (props) => {
       jwt: jwt,
       role: role,
     }));
-    window.localStorage.setItem("username", name);
-    window.localStorage.setItem("jwt", jwt);
-    window.localStorage.setItem("role", role);
   };
-  // Get Logged in User info
-  const getUserInfo = () => {
-    return window.localStorage.getItem("jwt");
-  };
+
 
   // Logout updates the user data to default
   const logout = () => {
