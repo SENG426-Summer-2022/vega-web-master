@@ -34,7 +34,7 @@ const checkPasswordStrength = (password) => {
 
 const ChangePasswordFormWrapper = () => {
   const {
-    user: { token },
+    user: { jwt },
   } = useContext(UserContext);
   const [errors, setErrors] = useState({});
   const [values, setValues] = useState(defaultValues);
@@ -94,7 +94,7 @@ const ChangePasswordFormWrapper = () => {
     // send to backend
     let response;
     try {
-      response = await changePassword({ newPassword }, token);
+      response = await changePassword({ newPassword }, jwt);
     } catch (error) {
       console.log(error);
       setMessage(changeErrorMessage);
