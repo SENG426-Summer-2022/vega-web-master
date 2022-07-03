@@ -2,6 +2,7 @@ import { login, signup } from "../services/LoginRequestAPI.js";
 import express from "express";
 
 let router = express();
+router.disable("x-powered-by");
 
 router.post("/login", (req, res) => {
   const userInfo = req.body;
