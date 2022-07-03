@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, Button, Stack, Col, Container } from "react-bootstrap";
+import { Button, Stack } from "react-bootstrap";
 import SimplePageLayout from "../templates/SimplePageLayout.js";
 import { UserContext } from "../../auth/UserProvider.js";
-import { changePassword } from "../../service/auth/PasswordManager.js";
+import ChangePasswordFormWrapper from "../UI/organisms/ChangePasswordFormWrapper.js";
 
 const UserAccount = () => {
   const { user, logout } = useContext(UserContext);
@@ -12,33 +12,6 @@ const UserAccount = () => {
   const logoutAndRouteChange = () => {
     logout();
     history.push("/");
-  };
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    // get the values from the react-bootstrap form
-    const data = {
-      newPassword: e.target.newPassword.value,
-      confirmPassword: e.target.confirmPassword.value,
-    };
-
-    // compare passwords
-    if (data.newPassword !== data.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    // send to backend
-    const response = await changePassword(data.newPassword, user.token);
-
-    if (response.status === 200) {
-      alert("Password changed successfully");
-      // clear password fields
-      document.getElementById("newPassword").value = "";
-      document.getElementById("confirmPassword").value = "";
-    } else {
-      alert("Password change failed");
-    }
   };
 
   return (
@@ -57,7 +30,9 @@ const UserAccount = () => {
           </Button>
         </Stack>
 
-        <Container
+        <ChangePasswordFormWrapper />
+
+        {/* <Container
           style={{ marginBottom: "4rem", paddingLeft: "0", maxWidth: "30rem" }}
         >
           <b>Change Password</b>
@@ -82,7 +57,7 @@ const UserAccount = () => {
               </Button>
             </Form>
           </Col>
-        </Container>
+        </Container> */}
       </Stack>
     </SimplePageLayout>
   );
