@@ -1,7 +1,8 @@
-import express from 'express';
+import express from "express";
 import UserController from "../controller/UsersController.js";
 
 let router = express();
+router.disable("x-powered-by");
 
 router.post("/changepassword", UserController.changePassword);
 
