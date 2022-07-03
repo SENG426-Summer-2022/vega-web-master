@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import UserRegistrationPageLayout from "../templates/UserRegistrationPageLayout.js";
+import FormPageLayout from "../templates/FormPageLayout.js";
 import LoginUser from "../UI/organisms/LoginUser.js";
 import { login } from "../../service/auth/AuthenticationManager.js";
 import CenteredHeader from "../UI/atoms/CenteredHeader.js";
@@ -38,11 +38,11 @@ const Login = () => {
 
   if (!auth) {
     return (
-      <UserRegistrationPageLayout>
+      <FormPageLayout>
         <CenteredHeader text="Login" style={{ marginBottom: "2rem" }} />
         <LoginUser onSubmit={onSubmit} />
         <p className="alert-danger text-center">{message}</p>
-      </UserRegistrationPageLayout>
+      </FormPageLayout>
     );
   } else {
     return <Redirect to="/" />;
