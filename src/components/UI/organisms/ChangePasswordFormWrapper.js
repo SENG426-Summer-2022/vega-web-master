@@ -69,7 +69,7 @@ const ChangePasswordFormWrapper = () => {
 
   const onChange = async (e) => {
     const { name, value } = e.target;
-    console.log({ name, value });
+
     if (name === "newPassword") {
       setValues({ ...values, newPassword: value });
       return;
@@ -94,17 +94,12 @@ const ChangePasswordFormWrapper = () => {
     // send to backend
     let response;
     try {
-      response = await changePassword(
-        {newPassword},
-        token
-      );
+      response = await changePassword({ newPassword }, token);
     } catch (error) {
       console.log(error);
       setMessage(changeErrorMessage);
       return;
     }
-
-    console.log({response})
 
     if (response === "OK") {
       setMessage(changeSuccessMessage);
