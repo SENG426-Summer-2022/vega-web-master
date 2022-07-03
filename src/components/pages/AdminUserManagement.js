@@ -6,6 +6,7 @@ import {Form, Table, Button} from "react-bootstrap";
 
 const AdminUserManagement = (props) => {     
 	const {user} = useContext(UserContext);
+    const username = props.location.state;
 
     const DeleteUser = (username) => {
         console.log("About to delete User " + username)
@@ -34,12 +35,10 @@ const AdminUserManagement = (props) => {
 
     // Tried this but didn't work: 
     // <h3>User Management for {this.props.location.state.usernamedata} </h3>
-
-    var username = "francisp@venus.com" // Temporary, remove after getting a input method
     
     return(
         <SimplePageLayout>
-            <h3> User Management for simonl@venus.com </h3>
+            <h3> User Management for {username} </h3>
             <div className={"section1"}>
                 <p></p>
                 <p>Delete this User </p>
