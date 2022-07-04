@@ -473,7 +473,7 @@ describe("AdminUserManagement", () => {
 
   describe("as user", () => {
     it("does not render the page", () => {
-      renderAdminUserManagement(<AdminUserManagement />, USER_USER);
+      renderAdminUserManagement(USER_USER);
 
       expect(
         screen.queryByText("You are not authorized to access this page.")
