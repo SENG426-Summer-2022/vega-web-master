@@ -9,10 +9,10 @@ import { UserContext } from "../../auth/UserProvider.js";
 import { useState, useContext, useEffect } from "react";
 
 import { Form, Button, Table } from "react-bootstrap";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AdminPanel = (props) => {
-	const history = useHistory();
+  const history = useHistory();
   const { user } = useContext(UserContext);
   const [listOfUsers, setUsers] = useState([]);
   const updateUsers = () => {
@@ -52,7 +52,6 @@ const AdminPanel = (props) => {
   };
 
   const manageUser = (username) => {
-    console.log("Redirect to UserManagement");
     history.push("/usermanagement", username);
   };
 
