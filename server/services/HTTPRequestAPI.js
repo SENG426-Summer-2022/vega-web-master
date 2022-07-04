@@ -9,8 +9,8 @@ export async function doPost(url, data){
 	return await handleResponse(response);
 }
 
-export async function doAuthPost(url, data, headers){
-  const response = await fetch(`${API_URL}${url}`, createRequestOptions('POST', data, headers));
+export async function doAuthPost(url, data, token){
+  const response = await fetch(`${API_URL}${url}`, createRequestOptions('POST', data, token));
   return await handleResponse(response);
 }
 
