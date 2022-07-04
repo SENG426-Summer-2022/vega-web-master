@@ -8,9 +8,11 @@ import {
 import { UserContext } from "../../auth/UserProvider.js";
 import { useState, useContext, useEffect } from "react";
 
-import { Form, Table } from "react-bootstrap";
+import { Form, Button, Table } from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
-const AdminPanel = (_props) => {
+const AdminPanel = (props) => {
+	const history = useHistory();
   const { user } = useContext(UserContext);
   const [listOfUsers, setUsers] = useState([]);
   const updateUsers = () => {
