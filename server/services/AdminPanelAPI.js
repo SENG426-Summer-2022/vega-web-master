@@ -27,5 +27,5 @@ export function changeUsername(url, headers) {
 }
 
 export function updateUser(data, headers) {
-  return doAuthPost("/venus/admin/changerole", data, headers);
+  return doAuthPost("/venus/admin/updateuser", data, headers["authorization"]);
 }
