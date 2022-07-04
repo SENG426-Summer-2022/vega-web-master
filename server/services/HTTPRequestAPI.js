@@ -1,3 +1,4 @@
+import FormData from 'form-data';
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
@@ -17,16 +18,16 @@ export async function doPostFile(url, data, headers){
 }
 
 function createRequestOptionsForFile(method, data, headers){
-  console.log(headers);
+  const formData = new FormData();
+  formData.append("file", data.file.data, data.file.name);
   var requestOptions = {
-    'method': method,
-    'headers': {
-      'Content-Type': undefined,
-      'Authorization': headers['authorization']
+    method: method,
+    headers: {
+      authorization: headers.authorization,
     },
-    'formData': data
-    }
-    console.log(requestOptions)
+    body: formData
+  }
+  console.log(requestOptions)
   return requestOptions;
 }
 
