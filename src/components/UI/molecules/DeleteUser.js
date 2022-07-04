@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Stack } from "react-bootstrap";
 
 const DeleteUserButton = (props) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -8,16 +8,18 @@ const DeleteUserButton = (props) => {
     return (
       <div>
         <p>Are you sure you want to delete this user?</p>
-        <div>
-          <Button variant="danger" onClick={() => setShowConfirmation(false)}>
-            Cancel
-          </Button>
-        </div>
-        <div>
-          <Button variant="success" onClick={props.onClick}>
-            Confirm
-          </Button>
-        </div>
+        <Stack direction="horizontal">
+          <div style={{ marginRight: "2rem" }}>
+            <Button variant="danger" onClick={() => setShowConfirmation(false)}>
+              Cancel
+            </Button>
+          </div>
+          <div>
+            <Button variant="success" onClick={props.onClick}>
+              Confirm
+            </Button>
+          </div>
+        </Stack>
       </div>
     );
   }
