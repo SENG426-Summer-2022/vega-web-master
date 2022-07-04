@@ -2,8 +2,7 @@ import SimplePageLayout from '../templates/SimplePageLayout.js';
 import { fetchuser, disableAccount, enableAccount, changeAccountRole } from '../../service/AdminPanel/AdminPanel.js';
 import {UserContext} from '../../auth/UserProvider.js';
 import {useState, useContext, useEffect} from 'react';
-
-import {Form, Table} from 'react-bootstrap';
+import {Form, Button, Row, Col, Table} from 'react-bootstrap';
 
 const AdminPanel = (_props) => {
 	const {user} = useContext(UserContext);
@@ -15,21 +14,28 @@ const AdminPanel = (_props) => {
 				setUsers(resp)
 			})
 	}
+    useEffect(() => {
+	fetchuser(user.jwt).then((resp) => {
+	    setUsers(resp);
+	});
+    }, [user]);
 
-	useEffect(() => {
-		updateUsers()
-	}, [user]);
+    const enableUser = (username) => {
+	enableAccount(username, user.jwt).then((resp) => {
+	    console.log("User enabled");
+	    // Update the list of users
+	    setUsers((users) => {
+		return users.map((user) => {
+		    if (user.username === username) {
+			user.enabled = true;
+		    }
+		    return user;
+		});
+	    });
+	});
+    };
 
-	const enableUser = (username) => {
-		console.log("Enable User called with", username)
-		enableAccount(username, user.jwt)
-			.then(_resp => {
-				console.log("User enabled")
-				updateUsers()
-			})
-	}
-
-	const disableUser = (username) => {
+    const disableUser = (username) => {
 		console.log("Disable User called with", username)
 		disableAccount(username, user.jwt)
 			.then(_resp => {
@@ -37,7 +43,6 @@ const AdminPanel = (_props) => {
 				updateUsers()
 			})
 	}
-
 	const changeRole = (evt, username) => {
 		console.log(evt.target.value, username)
 		const role = evt.target.value
@@ -50,7 +55,6 @@ const AdminPanel = (_props) => {
 	const updateEnabledState = (user) => user.enabled
 		? disableUser(user.username)
 		: enableUser(user.username);
-
 	// Possible Roles the text to display for it
 	const roles = {
 		"ROLE_STAFF": "STAFF",
