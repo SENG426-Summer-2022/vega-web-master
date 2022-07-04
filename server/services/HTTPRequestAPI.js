@@ -2,13 +2,15 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
+const API_URL = 'http://localhost:8080';
+
 export async function doPost(url, data){
 	const response = await fetch(url, createRequestOptions('POST', data));
 	return await handleResponse(response);
 }
 
 export async function doAuthPost(url, data, headers){
-  const response = await fetch(url, createRequestOptions('POST', data, headers));
+  const response = await fetch(`${API_URL}${url}`, createRequestOptions('POST', data, headers));
   return await handleResponse(response);
 }
 
