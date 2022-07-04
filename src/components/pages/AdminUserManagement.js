@@ -16,6 +16,16 @@ const editErrorMessage = {
   message: "User update failed. Please try again later.",
 };
 
+const emptyUsernameMessage = {
+  type: "danger",
+  text: "Please enter a username.",
+};
+
+const invalidUsernameMessage = {
+  type: "danger",
+  text: "Please enter a valid email address.",
+};
+
 const deleteSuccessMessage = {
   type: "success",
   text: "User deleted successfully.",
@@ -45,11 +55,9 @@ const AdminUserManagement = (props) => {
   const [message, setMessage] = useState();
   const [userDeleted, setUserDeleted] = useState(false);
 
-  useEffect(() => {
-    if (user.role !== "ROLE_ADMIN") {
-      props.history.push("/");
-    }
-  }, [user.role]);
+  if (user.role !== "ROLE_ADMIN") {
+    return <div>You are not authorized to access this page.</div>;
+  }
 
   const cancelEdit = () => {
     setFormDisabled(!formDisabled);
@@ -69,6 +77,18 @@ const AdminUserManagement = (props) => {
     let response;
     const { username, firstName, lastName } = userFormData;
     const { username: existingUsername } = userData;
+
+    // check for invalid username
+    if (!username.length) {
+      setMessage(emptyUsernameMessage);
+      return;
+    }
+
+    if (!username.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+      setMessage(invalidUsernameMessage);
+      return;
+    }
+
     try {
       response = await updateUser(
         { existingUsername, username, firstName, lastName },
