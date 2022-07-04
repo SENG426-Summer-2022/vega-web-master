@@ -463,7 +463,7 @@ describe("AdminUserManagement", () => {
 
   describe("as staff", () => {
     it("does not render the page", () => {
-      renderAdminUserManagement(<AdminUserManagement />, STAFF_USER);
+      renderAdminUserManagement(STAFF_USER);
 
       expect(
         screen.queryByText("You are not authorized to access this page.")
