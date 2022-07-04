@@ -25,19 +25,29 @@ const USER_USER = {
 
 const ADMIN_USER_INFO = {
   username: "admin",
-  role: "ROLE_ADMIN",
+    role: { authority: "ROLE_ADMIN"},
+    enabled: false,
+  firstName: "Vince",
+  lastName: "Vaughn",
+};
+
+const STAFF_USER_INFO = {
+  username: "staff",
+  role: { authority: "ROLE_STAFF"},
+  enabled: true,
   firstName: "Vince",
   lastName: "Vaughn",
 };
 
 const USER_USER_INFO = {
   username: "user",
-  role: "ROLE_USER",
+  role: { authority: "ROLE_USER" },
+  enabled: false,
   firstName: "Roy",
   lastName: "O'Bannon",
 };
 
-const fetchusersResult = [ADMIN_USER_INFO, USER_USER_INFO];
+const fetchusersResult = [STAFF_USER_INFO, USER_USER_INFO];
 
 const fetchuserPromise = Promise.resolve(fetchusersResult);
 const enableAccountPromise = Promise.resolve();
@@ -53,12 +63,15 @@ jest.mock("../service/AdminPanel/AdminPanel", () => ({
     mockChangeAccountRole(username, role, jwt),
 }));
 
-function renderAdminPanel(user, users = fetchusersResult) {
-  return render(
+async function renderAdminPanel(user, users = fetchusersResult) {
+    render(
     <UserProvider user={user}>
       <AdminPanel users={users} />
     </UserProvider>
-  );
+    );
+    return await act(async () => {
+        await fetchuserPromise;
+    });
 }
 
 describe("AdminPanel", () => {
@@ -67,14 +80,12 @@ describe("AdminPanel", () => {
     mockFetchuser.mockReturnValue(fetchuserPromise);
     mockEnableAccount.mockReturnValue(enableAccountPromise);
     mockChangeAccountRole.mockReturnValue(mockChangeAccountRolePromise);
+    jest.spyOn(React, "useEffect").mockImplementation((f) => f());
   });
 
   describe("List of Users", () => {
     it("renders a list of users", async () => {
-      renderAdminPanel(ADMIN_USER, [...fetchusersResult, USER_USER]);
-      await act(async () => {
-        await fetchuserPromise;
-      });
+      await renderAdminPanel(ADMIN_USER, [...fetchusersResult, USER_USER]);
       expect(
         screen.getByText(fetchusersResult[0].firstName)
       ).toBeInTheDocument();
@@ -82,24 +93,43 @@ describe("AdminPanel", () => {
         screen.getByText(fetchusersResult[1].firstName)
       ).toBeInTheDocument();
     });
+    it("renders a list with no users", async () => {
+      await renderAdminPanel(ADMIN_USER, []);
+      expect(
+          screen.getByText("First Name")
+      ).toBeInTheDocument();
+      expect(
+          screen.getByText("Last Name")
+      ).toBeInTheDocument();
+    });
   });
-
   describe("Change Role", () => {
-    it("allows Admin to change user roles", async () => {
-      jest.spyOn(React, "useEffect").mockImplementation((f) => f());
-
-      renderAdminPanel(ADMIN_USER);
-      await act(() => fetchuserPromise);
-
-      const select = screen.getAllByDisplayValue("Open this select menu")[0];
-
+    it("allows Admin to change staff to user", async () => {
+      await renderAdminPanel(ADMIN_USER, fetchusersResult);
+      
+      const user = fetchusersResult.find((x) => x.role.authority == "ROLE_STAFF");
+      const select = screen.getAllByDisplayValue("STAFF")[0];
+      
       userEvent.selectOptions(select, "ROLE_USER");
       expect(mockChangeAccountRole).toBeCalledWith(
-        fetchusersResult[0].username,
+        user.username,
         "ROLE_USER",
         ADMIN_USER.jwt
       );
     });
+    it("allows Admin to change user to staff", async () => {
+      await renderAdminPanel(ADMIN_USER, fetchusersResult);
+
+      const user = fetchusersResult.find((x) => x.role.authority == "ROLE_USER");
+      const select = screen.getAllByDisplayValue("USER")[0];
+      
+      userEvent.selectOptions(select, "ROLE_STAFF");
+      expect(mockChangeAccountRole).toBeCalledWith(
+        user.username,
+        "ROLE_STAFF",
+        ADMIN_USER.jwt
+      );
+  });
 
     // TODO
     // test in other file?
@@ -122,9 +152,8 @@ describe("AdminPanel", () => {
   describe("Enable User", () => {
     it("allows Admin to enable user", async () => {
       mockEnableAccount.mockReturnValue(enableAccountPromise);
+      await renderAdminPanel(ADMIN_USER, fetchusersResult);
 
-      renderAdminPanel(ADMIN_USER);
-      await act(() => fetchuserPromise);
       expect(screen.getAllByText(/Enable User/i)[0]).toBeInTheDocument();
       // click enable user
       act(() => {
@@ -134,7 +163,7 @@ describe("AdminPanel", () => {
       await act(() => enableAccountPromise);
 
       // check that user is enabled
-      expect(screen.getByText(/Enabled/i)).toBeInTheDocument();
+      expect(screen.getByText(/Disable User/i)).toBeInTheDocument();
     });
   });
 });

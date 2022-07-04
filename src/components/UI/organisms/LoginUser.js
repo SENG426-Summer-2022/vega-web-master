@@ -4,7 +4,6 @@ import React, { useState } from "react";
 const LoginUser = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const submitForm = (evt) => {
     evt.preventDefault();
     onSubmit({

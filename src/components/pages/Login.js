@@ -7,11 +7,13 @@ import CenteredHeader from "../UI/atoms/CenteredHeader.js";
 import { UserContext } from "../../auth/UserProvider.js";
 import { Redirect } from "react-router-dom";
 
-const Login = () => {
-  const { setUserInfo } = useContext(UserContext);
-  const [auth, setAuth] = useState(false);
-  const [message, setMessage] = useState(false);
+const Login = (props) => {
 
+	const { context } = props;
+	const {user, setUserInfo,logout} = useContext(UserContext);
+	const [auth, setAuth] = useState(false);
+	const [message, setMessage] = useState(false);
+	console.log("Userinfo", user);
   function onSubmit(userInfo) {
     // check if userInfo is valid
     if (userInfo.username === "" || userInfo.password === "") {
