@@ -5,14 +5,10 @@ import userEvent from "@testing-library/user-event";
 import { UserProvider } from "../auth/UserProvider.js";
 import AdminUserManagement from "../components/pages/AdminUserManagement.js";
 
-const EMPTY_USER = {
-  username: "",
-  jwt: "",
-  role: "",
-};
-
 const ADMIN_USER = {
   username: "admin",
+  firstName: "Admin",
+  lastName: "User",
   jwt: "eyabc",
   role: "ROLE_ADMIN",
 };
@@ -21,6 +17,12 @@ const USER_USER = {
   username: "user",
   jwt: "blah",
   role: "ROLE_USER",
+};
+
+const STAFF_USER = {
+  username: "staff",
+  jwt: "blah",
+  role: "ROLE_STAFF",
 };
 
 const ADMIN_USER_INFO = {
@@ -37,8 +39,8 @@ const USER_USER_INFO = {
   lastName: "O'Bannon",
 };
 
-const deleteAccountPromise = Promise.resolve({});
-const updateUserPromise = Promise.resolve({});
+const deleteAccountPromise = Promise.resolve({ status: "OK" });
+const updateUserPromise = Promise.resolve({ status: "OK" });
 
 const mockDeleteAccount = jest.fn();
 const mockUpdateUser = jest.fn();
@@ -47,8 +49,27 @@ jest.mock("../service/AdminPanel/AdminPanel", () => ({
   updateUser: (data, token) => mockUpdateUser(data, token),
 }));
 
-function wrappedRender(component, user) {
-  return render(<UserProvider user={user}>{component}</UserProvider>);
+function renderAdminUserManagement(user) {
+  // set location state
+  const location = {
+    state: {
+      user: user,
+    },
+  };
+
+  return render(
+    <UserProvider user={user}>
+      <AdminUserManagement location={location} />
+    </UserProvider>
+  );
+}
+
+function getFormInputs(screen) {
+  return {
+    username: screen.getByLabelText("Username"),
+    firstName: screen.getByLabelText("First Name"),
+    lastName: screen.getByLabelText("Last Name"),
+  };
 }
 
 describe("AdminUserManagement", () => {
@@ -59,68 +80,404 @@ describe("AdminUserManagement", () => {
   });
 
   describe("as admin", () => {
-    it("renders the page", () => {});
+    it("renders the page", () => {
+      renderAdminUserManagement(ADMIN_USER);
+
+      expect(screen.getByText("User Management")).toBeInTheDocument();
+    });
 
     describe("delete user", () => {
-      it("renders the delete user button");
+      it("renders the delete user button", () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("displays a confirmation when the delete user button is clicked");
+        expect(screen.getByText("Delete User")).toBeInTheDocument();
+      });
 
-      it("calls deleteUser when the Confirm button is clicked");
+      it("displays a confirmation when the delete user button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("displays success message when user is deleted");
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+        });
 
-      it("displays a Back To Admin Panel button when deletion is successful");
+        expect(screen.getByText("Confirm")).toBeInTheDocument();
+        expect(screen.getByText("Cancel")).toBeInTheDocument();
+      });
 
-      it("displays an error message when deletion is unsuccessful");
+      it("calls deleteUser when the Confirm button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("does not call deleteUser when Cancel button is clicked");
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Confirm"));
+        });
 
-      it("reverts back to default view when Cancel button is clicked");
+        expect(mockDeleteAccount).toHaveBeenCalledWith(
+          ADMIN_USER.username,
+          ADMIN_USER.jwt
+        );
+      });
+
+      it("displays success message when user is deleted", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Confirm"));
+        });
+
+        expect(
+          screen.getByText("User deleted successfully.")
+        ).toBeInTheDocument();
+      });
+
+      it("displays a Return to Admin Panel button when deletion is successful", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Confirm"));
+        });
+
+        expect(screen.getByText("Return to Admin Panel")).toBeInTheDocument();
+      });
+
+      it("displays an error message when deletion is unsuccessful", async () => {
+        mockDeleteAccount.mockReturnValue(Promise.resolve({}));
+
+        renderAdminUserManagement(ADMIN_USER);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Confirm"));
+        });
+
+        expect(
+          screen.getByText(
+            "User deletion was not successful. Please try again later."
+          )
+        ).toBeInTheDocument();
+      });
+
+      it("does not call deleteUser when Cancel button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Cancel"));
+        });
+
+        expect(mockDeleteAccount).not.toHaveBeenCalled();
+      });
+
+      it("reverts back to default view when Cancel button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Delete User"));
+          await userEvent.click(screen.getByText("Cancel"));
+        });
+
+        expect(screen.getByText("User Management")).toBeInTheDocument();
+        expect(screen.getByText("Delete User")).toBeInTheDocument();
+      });
     });
 
     describe("edit user form", () => {
       it("renders the form", async () => {
-        wrappedRender(<AdminUserManagement />, ADMIN_USER);
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        expect(firstName).toBeInTheDocument();
+        expect(lastName).toBeInTheDocument();
+        expect(username).toBeInTheDocument();
       });
 
-      it("renders the form as disabled by default");
+      it("renders the form as disabled by default", () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("renders the form with correct values");
+        const { firstName, lastName, username } = getFormInputs(screen);
 
-      it("enables the form when Edit User button is clicked");
+        expect(firstName).toBeDisabled();
+        expect(lastName).toBeDisabled();
+        expect(username).toBeDisabled();
+      });
 
-      it("disables the enabled form when Cancel button is clicked");
+      it("renders the form with correct values", () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("reverts any changes in the form when Cancel button is clicked");
+        const { firstName, lastName, username } = getFormInputs(screen);
 
-      it("displays changes in the inputs for an enabled form");
+        expect(firstName.value).toBe(ADMIN_USER.firstName);
+        expect(lastName.value).toBe(ADMIN_USER.lastName);
+        expect(username.value).toBe(ADMIN_USER.username);
+      });
 
-      it("displays an error message when username is empty");
+      it("enables the form when Edit User button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("displays an error message when username is invalid");
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+        });
 
-      it("calls updateUser with the correct data when the form is submitted");
+        const { firstName, lastName, username } = getFormInputs(screen);
 
-      it("shows a success message when the form is successfully submitted");
+        expect(firstName).not.toBeDisabled();
+        expect(lastName).not.toBeDisabled();
+        expect(username).not.toBeDisabled();
+      });
 
-      it(
-        "disables the form with the updated values when the form is successfully submitted"
-      );
+      it("disables the enabled form when Cancel button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
 
-      it("displays an error message when the form submits unsuccessfully");
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+          await userEvent.click(screen.getByText("Cancel"));
+        });
 
-      it(
-        "keeps the form enabled and populated when the form submits unsuccessfully"
-      );
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        expect(firstName).toBeDisabled();
+        expect(lastName).toBeDisabled();
+        expect(username).toBeDisabled();
+      });
+
+      it("displays changes in the inputs for an enabled form", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(firstName);
+          await userEvent.clear(lastName);
+          await userEvent.clear(username);
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@s");
+        });
+
+        expect(firstName.value).toBe("newFirstName");
+        expect(lastName.value).toBe("newLastName");
+        expect(username.value).toBe("newUsername@s");
+      });
+
+      it("reverts any changes in the form when Cancel button is clicked", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@s");
+
+          await userEvent.click(screen.getByText("Cancel"));
+        });
+
+        expect(firstName.value).toBe(ADMIN_USER.firstName);
+        expect(lastName.value).toBe(ADMIN_USER.lastName);
+        expect(username.value).toBe(ADMIN_USER.username);
+      });
+
+      it("displays an error message when username is empty", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(username);
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(
+          screen.getByText("Please enter a username.")
+        ).toBeInTheDocument();
+      });
+
+      it("displays an error message when username is invalid", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.type(username, "invalidUsername");
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(
+          screen.getByText("Please enter a valid email address.")
+        ).toBeInTheDocument();
+      });
+
+      it("calls updateUser with the correct data when the form is submitted", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(firstName);
+          await userEvent.clear(lastName);
+          await userEvent.clear(username);
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@user.com");
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(mockUpdateUser).toHaveBeenCalledWith(
+          {
+            existingUsername: ADMIN_USER_INFO.username,
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          },
+          ADMIN_USER.jwt
+        );
+      });
+
+      it("shows a success message when the form is successfully submitted", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@user.com");
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(
+          screen.getByText("User updated successfully!")
+        ).toBeInTheDocument();
+      });
+
+      it("disables the form with the updated values when the form is successfully submitted", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(firstName);
+          await userEvent.clear(lastName);
+          await userEvent.clear(username);
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@user.com");
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(firstName).toBeDisabled();
+        expect(lastName).toBeDisabled();
+        expect(username).toBeDisabled();
+
+        expect(firstName.value).toBe("newFirstName");
+        expect(lastName.value).toBe("newLastName");
+        expect(username.value).toBe("newUsername@user.com");
+
+        expect(screen.getByText("Edit User")).toBeInTheDocument();
+      });
+
+      it("displays an error message when the form submits unsuccessfully", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+        mockUpdateUser.mockRejectedValue(new Error("Error updating user"));
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(firstName);
+          await userEvent.clear(lastName);
+          await userEvent.clear(username);
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@user.com");
+
+          userEvent.click(screen.getByText("Save"));
+        });
+
+        expect(
+          screen.getByText("User update failed. Please try again later.")
+        ).toBeInTheDocument();
+      });
+
+      it("keeps the form enabled and populated when the form submits unsuccessfully", async () => {
+        renderAdminUserManagement(ADMIN_USER);
+        mockUpdateUser.mockRejectedValue(new Error("Error updating user"));
+
+        const { firstName, lastName, username } = getFormInputs(screen);
+
+        await act(async () => {
+          await userEvent.click(screen.getByText("Edit User"));
+
+          await userEvent.clear(firstName);
+          await userEvent.clear(lastName);
+          await userEvent.clear(username);
+
+          await userEvent.type(firstName, "newFirstName");
+          await userEvent.type(lastName, "newLastName");
+          await userEvent.type(username, "newUsername@user.com");
+
+          await userEvent.click(screen.getByText("Save"));
+        });
+
+        // expect values to still be set
+        expect(screen.getByLabelText("First Name").value).toBe("newFirstName");
+        expect(screen.getByLabelText("Last Name").value).toBe("newLastName");
+        expect(screen.getByLabelText("Username").value).toBe(
+          "newUsername@user.com"
+        );
+
+        //expect form to be enabled
+        expect(screen.getByLabelText("First Name")).not.toBeDisabled();
+        expect(screen.getByLabelText("Last Name")).not.toBeDisabled();
+        expect(screen.getByLabelText("Username")).not.toBeDisabled();
+      });
     });
   });
 
   describe("as staff", () => {
-    it("does not render the page");
+    it("does not render the page", () => {
+      renderAdminUserManagement(<AdminUserManagement />, STAFF_USER);
+
+      expect(
+        screen.queryByText("You are not authorized to access this page.")
+      ).toBeInTheDocument();
+    });
   });
 
   describe("as user", () => {
-    it("does not render the page");
+    it("does not render the page", () => {
+      renderAdminUserManagement(<AdminUserManagement />, USER_USER);
+
+      expect(
+        screen.queryByText("You are not authorized to access this page.")
+      ).toBeInTheDocument();
+    });
   });
 });

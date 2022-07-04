@@ -24,7 +24,7 @@ const DeleteUserButton = (props) => {
 
   return (
     <div>
-      <Button variant="danger" onClick={() => setShowDeleteConfirmation(true)}>
+      <Button variant="danger" onClick={() => setShowConfirmation(true)}>
         Delete User
       </Button>
     </div>
