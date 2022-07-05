@@ -21,7 +21,6 @@ const AdminPanel = (_props) => {
 	}, [user]);
 
 	const enableUser = (username) => {
-		console.log("Enable User called with", username)
 		enableAccount(username, user.jwt)
 			.then(_resp => {
 				console.log("User enabled")
@@ -39,8 +38,7 @@ const AdminPanel = (_props) => {
 	}
 
 	const changeRole = (evt, username) => {
-		console.log(evt.target.value, username)
-		const role = evt.target.value
+		var role = evt.target.value
 		changeAccountRole(username, role, user.jwt)
 			.then(_resp => {
 				console.log("Changed Roles")

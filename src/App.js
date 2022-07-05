@@ -1,10 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useContext} from 'react';
 import HomePageLayout from './components/templates/HomePageLayout.js';
-import BlogPageLayout from './components/templates/BlogPageLayout.js';
-import UserRegistrationPageLayout from './components/templates/UserRegistrationPageLayout.js'
-import SimplePageLayout from './components/templates/SimplePageLayout.js'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Platform from './components/pages/Platform.js';
 import Login from './components/pages/Login.js';
@@ -16,21 +12,12 @@ import AdminPanel from './components/pages/AdminPanel.js';
 import Leadership from './components/pages/Leadership.js';
 import UserRegistration from './components/pages/UserRegistration.js';
 import {UserProvider} from './auth/UserProvider.js';
-import {UserContext} from './auth/UserProvider.js';
 import UserAccount from './components/pages/UserAccount.js';
 
 function App() {
-
-  const {user, setUserInfo, logout} = useContext(UserContext);
-
   return (
-<<<<<<< HEAD
-   <UserProvider value ={user, setUserInfo, logout}>
-   <BrowserRouter>
-=======
-   <UserProvider value ={{user, setUserInfo, logout}}> 
+    <UserProvider>
       <BrowserRouter>
->>>>>>> 316fa37c (testing)
         <Switch>
         	<Route path="/" component={HomePageLayout} exact />
         	<Route path="/contactus" component={UserRegistration} exact />
@@ -44,15 +31,9 @@ function App() {
           <Route path="/adminpanel" component={AdminPanel} />
           <Route path="/aboutus" component={AboutUs} />
         </Switch>
-<<<<<<< HEAD
         </BrowserRouter>
-=======
-      </BrowserRouter>
->>>>>>> 316fa37c (testing)
     </UserProvider>
   );
 }
-
-
 
 export default App;
