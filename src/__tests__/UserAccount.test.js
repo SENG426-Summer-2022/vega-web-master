@@ -30,8 +30,6 @@ function wrappedRender(component, user) {
 }
 
 async function changePassword(newPass, token) {
-  const newPass = "12345678";
-
   const { newPassword, confirmPassword } = getFormInputs(screen);
 
   userEvent.type(newPassword, newPass);
