@@ -6,7 +6,6 @@ router.disable("x-powered-by");
 
 router.post("/login", (req, res) => {
   const userInfo = req.body;
-  console.log(userInfo);
   console.log("Authenticating User");
   login("http://localhost:8080/venus/authenticate", userInfo)
     .then((response) => {
