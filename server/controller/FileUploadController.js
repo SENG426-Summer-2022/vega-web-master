@@ -12,7 +12,7 @@ router.use(fileUpload({
 router.post("/upload", (req,res) => {
 	var formData = req.files;
     console.log("Entered into File uploader", formData)
-    uploader(`${process.env.API_URL}/venus/admin/handlefileupload`, formData, req.headers)
+    uploader("https://seng426group7backend.azurewebsites.net/venus/admin/handlefileupload", formData, req.headers)
     		.then(response => {
     			console.log("Response", response);
     			res.send(response);
@@ -25,7 +25,7 @@ router.post("/upload", (req,res) => {
 
 router.get("/listfiles", (req, res) => {
 	console.log("Entered list files");
-	listFiles(`${process.env.API_URL}/venus/files/listfiles`, req.headers)
+	listFiles("https://seng426group7backend.azurewebsites.net/venus/files/listfiles", req.headers)
 	.then(response => {
     	console.log("Response", response);
     	res.send(response);
@@ -40,7 +40,7 @@ router.get("/fetchcontent", (req, res) => {
 	console.log("Fetch Content")
 	const {name} = req.query
 	console.log(name)
-	fetchcontent(`${process.env.API_URL}/venus/files/fetch/`+name, req.headers)
+	fetchcontent("https://seng426group7backend.azurewebsites.net/venus/files/fetch/"+name, req.headers)
 	.then(response => {
     	console.log("Response", response);
     	res.send(response);
