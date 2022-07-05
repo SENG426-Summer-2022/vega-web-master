@@ -130,9 +130,7 @@ describe("AdminPanel", () => {
         ADMIN_USER.jwt
       );
   });
-
-    describe("Enable User", () => {
-      it("displays an Enable User button on each row");
+});
 
   describe("Enable User", () => {
     it("allows Admin to enable user", async () => {
@@ -148,13 +146,5 @@ describe("AdminPanel", () => {
       // check that user is enabled
       expect(screen.getByText(/Disable User/i)).toBeInTheDocument();
     });
-  });
-
-  describe("as staff", () => {
-    it("does not render");
-  });
-
-  describe("as user", () => {
-    it("does not render");
   });
 });

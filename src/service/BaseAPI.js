@@ -44,6 +44,18 @@ export async function doPost(url, data) {
   return await handleResponse(response);
 }
 
+export async function doAuthPost(url, data, token) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers : {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify(data),
+  });
+  return await handleResponse(response);
+}
+
 export async function doPostFile(url, data, token) {
   console.debug('Request data:', data);
   const response = await fetch(url, {

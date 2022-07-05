@@ -8,7 +8,7 @@ import {
 import { UserContext } from "../../auth/UserProvider.js";
 import { useState, useContext, useEffect } from "react";
 
-import { Form, Button, Table } from "react-bootstrap";
+import { Form, Button, Table, Container, Row, Stack } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 const AdminPanel = (props) => {
@@ -111,19 +111,30 @@ const AdminPanel = (props) => {
 
   return (
     <SimplePageLayout>
-      <Table>
-        <thead>
-          <tr>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Username</td>
-            <td>Enable User</td>
-            <td>Change Role</td>
-            <td>Manage</td>
-          </tr>
-        </thead>
-        <tbody>{listOfUsersHTML()}</tbody>
-      </Table>
+      <Container style={{ marginTop: "2rem" }}>
+        <Row style={{ marginBottom: "2rem" }}>
+          <Stack direction="horizontal" style={{ justifyContent: "flex-end" }}>
+            <Button variant="success" href="./signup">
+              Add User
+            </Button>
+          </Stack>
+        </Row>
+        <Row>
+          <Table>
+            <thead>
+              <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Username</td>
+                <td>Enable User</td>
+                <td>Change Role</td>
+                <td>Manage</td>
+              </tr>
+            </thead>
+            <tbody>{listOfUsersHTML()}</tbody>
+          </Table>
+        </Row>
+      </Container>
     </SimplePageLayout>
   );
 };

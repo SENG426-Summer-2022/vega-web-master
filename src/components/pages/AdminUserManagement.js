@@ -3,6 +3,7 @@ import { Button, Stack, Form } from "react-bootstrap";
 
 import SimplePageLayout from "../templates/SimplePageLayout";
 import DeleteUserButton from "../UI/molecules/DeleteUser";
+import { UserContext } from "../../auth/UserProvider";
 
 import { deleteAccount, updateUser } from "../../service/AdminPanel/AdminPanel";
 
@@ -104,12 +105,6 @@ const AdminUserManagement = (props) => {
       }
     } catch (e) {
       setMessage(editErrorMessage);
-    }
-
-    if (response.status === "OK") {
-      setMessage(successMessage);
-    } else {
-      setMessage(errorMessage);
     }
   };
 
