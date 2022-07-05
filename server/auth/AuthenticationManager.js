@@ -5,7 +5,7 @@ export function authModule(req, res) {
     	const userInfo = req.body;
     	console.log(userInfo);
         console.log("Authenticating User");
-    	login("http://localhost:8080/venus/authenticate", userInfo)
+    	login(`${process.env.API_URL}/venus/authenticate`, userInfo)
     		.then(response => {
     			console.log("Response", response);
     			res.send(response);
@@ -23,7 +23,7 @@ export function signupModule(req, res) {
     	const userInfo = req.body;
     	console.log(userInfo);
         console.log("Registering User");
-        signup("http://localhost:8080/venus/register", userInfo)
+        signup(`${process.env.API_URL}/venus/register`, userInfo)
             .then(response => {
                 console.log("Response", response);
                 res.send(response);
