@@ -24,7 +24,6 @@ if (process.env.NODE_ENV === "development") {
   };
   app.use(cors(corsOptions));
 } else {
-  console.log("here!!");
   var corsOptions = {
     origin: "https://seng426group7frontend.azurewebsites.net/",
     optionsSuccessStatus: 200,
