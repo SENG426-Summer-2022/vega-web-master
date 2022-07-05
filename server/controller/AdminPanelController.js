@@ -1,7 +1,13 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import {fetchusers, enableAccount, changeRole, changeEmail, changeUsername, deleteAccount} from '../services/AdminPanelAPI.js';
-import fileUpload from 'express-fileupload';
+import bodyParser from "body-parser";
+import express from "express";
+import {
+  fetchusers,
+  enableAccount,
+  changeRole,
+  deleteAccount,
+  updateUser
+} from "../services/AdminPanelAPI.js";
+import fileUpload from "express-fileupload";
 
 let router = express();
 
@@ -100,5 +106,11 @@ router.get("/changeusername", (req, res) => {
 		res.send(error)
 	})
 })
+
+router.post("/updateuser", async (req, res) => {
+  const body = req.body;
+  const response = await updateUser(body, req.headers);
+  res.send(response);
+});
 
 export default router;

@@ -7,6 +7,12 @@ export async function doPost(url, data){
 	return await handleResponse(response);
 }
 
+export async function doAuthPost(url, data, headers){
+  const response = await fetch(url, createRequestOptions('POST', data, headers));
+  return await handleResponse(response);
+}
+
+
 export async function doGet(url, token){
   const response = await fetch(url, createRequestOptions('GET', undefined, token));
   return await handleResponse(response);
