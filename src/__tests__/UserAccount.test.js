@@ -29,6 +29,23 @@ function wrappedRender(component, user) {
   return render(<UserProvider user={user}>{component}</UserProvider>);
 }
 
+async function changePassword(newPass, token) {
+  const newPass = "12345678";
+
+  const { newPassword, confirmPassword } = getFormInputs(screen);
+
+  userEvent.type(newPassword, newPass);
+  userEvent.type(confirmPassword, newPass);
+  await act(async () => {
+    await userEvent.click(screen.getByText("Submit"));
+  });
+  expect(mockChangePassword).toHaveBeenCalledWith(
+    { newPassword: newPass },
+    token
+  );
+
+}
+
 describe("UserAccount", () => {
   it("renders the page", () => {
     const { container } = wrappedRender(<UserAccount />, USER);
@@ -59,21 +76,8 @@ describe("UserAccount", () => {
 
     it("calls changePassword when form is submitted", async () => {
       wrappedRender(<UserAccount />, USER);
-      const newPass = "12345678";
-
-      const { newPassword, confirmPassword } = getFormInputs(screen);
-
-      userEvent.type(newPassword, newPass);
-      userEvent.type(confirmPassword, newPass);
-
-      await act(async () => {
-        await userEvent.click(screen.getByText("Submit"));
-      });
-
-      expect(mockChangePassword).toHaveBeenCalledWith(
-        { newPassword: newPass },
-        USER.jwt
-      );
+      
+      await changePassword("12345678", USER.jwt);
 
       expect(
         screen.getByText("Password changed successfully!")
@@ -83,21 +87,8 @@ describe("UserAccount", () => {
     it("shows error message when changePassword fails", async () => {
       mockChangePassword.mockReturnValue(Promise.reject());
       wrappedRender(<UserAccount />, USER);
-      const newPass = "12345678";
 
-      const { newPassword, confirmPassword } = getFormInputs(screen);
-
-      userEvent.type(newPassword, newPass);
-      userEvent.type(confirmPassword, newPass);
-
-      await act(async () => {
-        await userEvent.click(screen.getByText("Submit"));
-      });
-
-      expect(mockChangePassword).toHaveBeenCalledWith(
-        { newPassword: newPass },
-        USER.jwt
-      );
+      await changePassword("12345678", USER.jwt);
 
       expect(
         screen.getByText("Password change failed. Please try again later.")
