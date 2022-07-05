@@ -53,7 +53,7 @@ function renderAdminUserManagement(user) {
   // set location state
   const location = {
     state: {
-      user: user,
+      ...user,
     },
   };
 
@@ -143,7 +143,7 @@ describe("AdminUserManagement", () => {
       });
 
       it("displays an error message when deletion is unsuccessful", async () => {
-        mockDeleteAccount.mockReturnValue(Promise.resolve({}));
+        mockDeleteAccount.mockReturnValue(Promise.reject({}));
 
         renderAdminUserManagement(ADMIN_USER);
 
@@ -342,10 +342,10 @@ describe("AdminUserManagement", () => {
 
         expect(mockUpdateUser).toHaveBeenCalledWith(
           {
-            existingUsername: ADMIN_USER_INFO.username,
+            username: ADMIN_USER_INFO.username,
             firstName: "newFirstName",
             lastName: "newLastName",
-            username: "newUsername@user.com",
+            newusername: "newUsername@user.com",
           },
           ADMIN_USER.jwt
         );

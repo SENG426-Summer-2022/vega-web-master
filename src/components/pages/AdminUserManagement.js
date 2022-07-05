@@ -84,7 +84,7 @@ const AdminUserManagement = (props) => {
     const { username: existingUsername } = userData;
 
     // check for invalid username
-    if (!username.length) {
+    if (!username?.length) {
       setMessage(emptyUsernameMessage);
       return;
     }
@@ -95,6 +95,13 @@ const AdminUserManagement = (props) => {
     }
 
     try {
+      console.log({
+        username: existingUsername,
+        newusername: username,
+        firstName,
+        lastName,
+      });
+
       await updateUser(
         {
           username: existingUsername,
@@ -104,6 +111,7 @@ const AdminUserManagement = (props) => {
         },
         user.jwt
       );
+      console.log(userFormData);
       setMessage(editSuccessMessage);
       setUserData(userFormData);
       setFormDisabled(true);
@@ -164,28 +172,26 @@ const AdminUserManagement = (props) => {
         )}
 
         <Stack>
-          <Stack directon="horizontal">
-            <Form.Group>
-              <Form.Label htmlFor="firstName">First Name</Form.Label>
-              <Form.Control
-                type="text"
-                id="firstName"
-                value={userFormData.firstName}
-                disabled={formDisabled}
-                onChange={onChange}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="lastName">Last Name</Form.Label>
-              <Form.Control
-                type="text"
-                id="lastName"
-                value={userFormData.lastName}
-                disabled={formDisabled}
-                onChange={onChange}
-              ></Form.Control>
-            </Form.Group>
-          </Stack>
+          <Form.Group style={{ marginBottom: "1rem" }}>
+            <Form.Label htmlFor="firstName">First Name</Form.Label>
+            <Form.Control
+              type="text"
+              id="firstName"
+              value={userFormData.firstName}
+              disabled={formDisabled}
+              onChange={onChange}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group style={{ marginBottom: "1rem" }}>
+            <Form.Label htmlFor="lastName">Last Name</Form.Label>
+            <Form.Control
+              type="text"
+              id="lastName"
+              value={userFormData.lastName}
+              disabled={formDisabled}
+              onChange={onChange}
+            ></Form.Control>
+          </Form.Group>
           <Form.Group>
             <Form.Label htmlFor="username">Username</Form.Label>
             <Form.Control
