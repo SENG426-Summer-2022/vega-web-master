@@ -2,7 +2,11 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
-const hostWhitelist = ["localhost"];
+const hostWhitelist = [ "localhost", 
+                        "seng426group7frontend.azurewebsites.net", 
+                        "seng426group7frontendserver.azurewebsites.net", 
+                        "seng426group7backend.azurewebsites.net"
+                      ];
 
 function getHostname (url) {
   const nURL = new URL(url);
