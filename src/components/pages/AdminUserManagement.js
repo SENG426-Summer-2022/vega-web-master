@@ -95,13 +95,6 @@ const AdminUserManagement = (props) => {
     }
 
     try {
-      console.log({
-        username: existingUsername,
-        newusername: username,
-        firstName,
-        lastName,
-      });
-
       await updateUser(
         {
           username: existingUsername,
@@ -111,7 +104,6 @@ const AdminUserManagement = (props) => {
         },
         user.jwt
       );
-      console.log(userFormData);
       setMessage(editSuccessMessage);
       setUserData(userFormData);
       setFormDisabled(true);
