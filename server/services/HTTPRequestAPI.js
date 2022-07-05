@@ -2,7 +2,7 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
-const hostWhitelist = ["localhost:8080"];
+const hostWhitelist = ["localhost"];
 
 function getHostname (url) {
   const nURL = new URL(url);
@@ -84,9 +84,11 @@ export async function handleResponse(response) {
   let result;
 
   result = handleJSONResult(await response.text());
+
   if (response.ok) {
     return result;
   }
+  
   // handle error
   console.warn("Response is not OK:", response.status);
   console.warn("Response body:", result);
