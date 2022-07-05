@@ -55,8 +55,8 @@ const AdminPanel = (props) => {
 		? disableUser(user.username)
 		: enableUser(user.username);
 
-  const manageUser = (username) => {
-    history.push("/usermanagement", username);
+  const manageUser = (user) => {
+    history.push("/usermanagement", user);
   };
 
   // Possible Roles the text to display for it
@@ -101,7 +101,7 @@ const AdminPanel = (props) => {
             </Form.Select>
           </td>
           <td>
-            <Button variant="primary" onClick={() => manageUser(user.username)}>
+            <Button variant="primary" onClick={() => manageUser(user)}>
               Manage User
             </Button>
           </td>

@@ -9,12 +9,12 @@ import { deleteAccount, updateUser } from "../../service/AdminPanel/AdminPanel";
 
 const editSuccessMessage = {
   type: "success",
-  message: "User updated successfully!",
+  text: "User updated successfully!",
 };
 
 const editErrorMessage = {
   type: "danger",
-  message: "User update failed. Please try again later.",
+  text: "User update failed. Please try again later.",
 };
 
 const emptyUsernameMessage = {
@@ -39,9 +39,7 @@ const deleteErrorMessage = {
 
 const AdminUserManagement = (props) => {
   const { user } = useContext(UserContext);
-  const {
-    user: { username, firstName, lastName },
-  } = props.location.state;
+  const { username, firstName, lastName } = props.location.state;
   const [userData, setUserData] = useState({
     username,
     firstName,
@@ -61,21 +59,27 @@ const AdminUserManagement = (props) => {
   }
 
   const cancelEdit = () => {
+    setUserFormData(userData);
     setFormDisabled(!formDisabled);
   };
 
   const deleteUser = async () => {
-    const response = await deleteAccount(userData.username, user.jwt);
-    if (response.status === "OK") {
+    try {
+      await deleteAccount(userData.username, user.jwt);
       setMessage(deleteSuccessMessage);
       setUserDeleted(true);
-    } else {
+    } catch (e) {
       setMessage(deleteErrorMessage);
     }
   };
 
-  const onSubmit = async () => {
-    let response;
+  const onChange = (e) => {
+    const { id, value } = e.target;
+    setUserFormData({ ...userFormData, [id]: value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     const { username, firstName, lastName } = userFormData;
     const { username: existingUsername } = userData;
 
@@ -91,18 +95,18 @@ const AdminUserManagement = (props) => {
     }
 
     try {
-      response = await updateUser(
-        { existingUsername, username, firstName, lastName },
+      await updateUser(
+        {
+          username: existingUsername,
+          newusername: username,
+          firstName,
+          lastName,
+        },
         user.jwt
       );
-
-      if (response.status === "OK") {
-        setMessage(editSuccessMessage);
-        setUserData(userFormData);
-        setFormDisabled(true);
-      } else {
-        setMessage(editErrorMessage);
-      }
+      setMessage(editSuccessMessage);
+      setUserData(userFormData);
+      setFormDisabled(true);
     } catch (e) {
       setMessage(editErrorMessage);
     }
@@ -155,6 +159,10 @@ const AdminUserManagement = (props) => {
           )}
         </Stack>
 
+        {message && (
+          <div className={`alert alert-${message.type}`}>{message.text}</div>
+        )}
+
         <Stack>
           <Stack directon="horizontal">
             <Form.Group>
@@ -162,8 +170,9 @@ const AdminUserManagement = (props) => {
               <Form.Control
                 type="text"
                 id="firstName"
-                value={firstName}
+                value={userFormData.firstName}
                 disabled={formDisabled}
+                onChange={onChange}
               ></Form.Control>
             </Form.Group>
             <Form.Group>
@@ -171,8 +180,9 @@ const AdminUserManagement = (props) => {
               <Form.Control
                 type="text"
                 id="lastName"
-                value={lastName}
+                value={userFormData.lastName}
                 disabled={formDisabled}
+                onChange={onChange}
               ></Form.Control>
             </Form.Group>
           </Stack>
@@ -181,8 +191,9 @@ const AdminUserManagement = (props) => {
             <Form.Control
               type="text"
               id="username"
-              value={username}
+              value={userFormData.username}
               disabled={formDisabled}
+              onChange={onChange}
             ></Form.Control>
           </Form.Group>
           <hr style={{ marginTop: "2rem", marginBottom: "2rem" }} />

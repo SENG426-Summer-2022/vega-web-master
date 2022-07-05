@@ -26,6 +26,13 @@ export function changeUsername(url, headers) {
   return doGet(url, headers["authorization"]);
 }
 
-export function updateUser(data, headers) {
-  return doAuthPost("/venus/admin/updateuser", data, headers["authorization"]);
+export function updateUser(
+  { username, newusername, newFirstname, newLastname },
+  headers
+) {
+  return doAuthPost(
+    `/venus/admin/updateuser/?username=${username}&newusername=${newusername}&newFirstname=${newFirstname}&newLastname=${newLastname}`,
+    null,
+    headers["authorization"]
+  );
 }
