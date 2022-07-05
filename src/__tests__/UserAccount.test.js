@@ -37,11 +37,7 @@ async function changePassword(newPass, token) {
   await act(async () => {
     await userEvent.click(screen.getByText("Submit"));
   });
-  expect(mockChangePassword).toHaveBeenCalledWith(
-    { newPassword: newPass },
-    token
-  );
-
+  expect(mockChangePassword).toHaveBeenCalledWith(newPass, token);
 }
 
 describe("UserAccount", () => {
@@ -74,7 +70,7 @@ describe("UserAccount", () => {
 
     it("calls changePassword when form is submitted", async () => {
       wrappedRender(<UserAccount />, USER);
-      
+
       await changePassword("12345678", USER.jwt);
 
       expect(
