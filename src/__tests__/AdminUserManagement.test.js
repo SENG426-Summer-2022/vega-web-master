@@ -72,6 +72,13 @@ function getFormInputs() {
   };
 }
 
+// for sonar
+async function clickSave() {
+  await act(async () => {
+    await userEvent.click(screen.getByText("Save"));
+  });
+}
+
 async function inputNewValues(formInputs, newValues) {
   // await userEvents
   await act(async () => {
@@ -304,11 +311,10 @@ describe("AdminUserManagement", () => {
 
         await act(async () => {
           await userEvent.click(screen.getByText("Edit User"));
-
           await userEvent.clear(username);
-
-          await userEvent.click(screen.getByText("Save"));
         });
+
+        await clickSave();
 
         expect(
           screen.getByText("Please enter a username.")
@@ -322,11 +328,10 @@ describe("AdminUserManagement", () => {
 
         await act(async () => {
           await userEvent.click(screen.getByText("Edit User"));
-
           await userEvent.type(username, "invalidUsername");
-
-          await userEvent.click(screen.getByText("Save"));
         });
+
+        await clickSave();
 
         expect(
           screen.getByText("Please enter a valid email address.")
@@ -347,9 +352,7 @@ describe("AdminUserManagement", () => {
           }
         );
 
-        await act(async () => {
-          await userEvent.click(screen.getByText("Save"));
-        });
+        await clickSave();
 
         expect(mockUpdateUser).toHaveBeenCalledWith(
           {
@@ -376,9 +379,7 @@ describe("AdminUserManagement", () => {
           }
         );
 
-        await act(async () => {
-          await userEvent.click(screen.getByText("Save"));
-        });
+        await clickSave();
 
         expect(
           screen.getByText("User updated successfully!")
@@ -399,9 +400,7 @@ describe("AdminUserManagement", () => {
           }
         );
 
-        await act(async () => {
-          await userEvent.click(screen.getByText("Save"));
-        });
+        await clickSave();
 
         expect(firstName).toBeDisabled();
         expect(lastName).toBeDisabled();
@@ -453,9 +452,7 @@ describe("AdminUserManagement", () => {
           }
         );
 
-        await act(async () => {
-          await userEvent.click(screen.getByText("Save"));
-        });
+        await clickSave();
 
         // expect values to still be set
         expect(screen.getByLabelText("First Name").value).toBe("newFirstName");
