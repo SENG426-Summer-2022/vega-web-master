@@ -11,10 +11,11 @@ import { useHistory } from "react-router-dom";
 
 import { Form, Table, Button } from "react-bootstrap";
 
-const AdminPanel = (_props) => {
+const AdminPanel = (props) => {
+	const history = useHistory();
   const { user } = useContext(UserContext);
   const [listOfUsers, setUsers] = useState([]);
-  const history = useHistory();
+  
   const updateUsers = () => {
     console.log("Updating Users");
     fetchuser(user.jwt).then((resp) => {
