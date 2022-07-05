@@ -2,17 +2,28 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Stack, Form } from "react-bootstrap";
 
 import SimplePageLayout from "../templates/SimplePageLayout";
+import DeleteUserButton from "../UI/molecules/DeleteUser";
 
 import { deleteAccount, updateUser } from "../../service/AdminPanel/AdminPanel";
 
-const successMessage = {
+const editSuccessMessage = {
   type: "success",
   message: "User updated successfully!",
 };
 
-const errorMessage = {
+const editErrorMessage = {
   type: "danger",
   message: "User update failed. Please try again later.",
+};
+
+const deleteSuccessMessage = {
+  type: "success",
+  text: "User deleted successfully.",
+};
+
+const deleteErrorMessage = {
+  type: "danger",
+  text: "User deletion was not successful. Please try again later.",
 };
 
 const AdminUserManagement = (props) => {
@@ -32,6 +43,7 @@ const AdminUserManagement = (props) => {
   });
   const [formDisabled, setFormDisabled] = useState(true);
   const [message, setMessage] = useState();
+  const [userDeleted, setUserDeleted] = useState(false);
 
   useEffect(() => {
     if (user.role !== "ROLE_ADMIN") {
@@ -43,12 +55,14 @@ const AdminUserManagement = (props) => {
     setFormDisabled(!formDisabled);
   };
 
-  const DeleteUser = async (username) => {
-    const pResult = global.confirm(
-      `Are you sure you want to delete the user ${username}?`
-    );
-    if (!pResult) return;
-    await deleteAccount(username, user.jwt);
+  const deleteUser = async () => {
+    const response = await deleteAccount(userData.username, user.jwt);
+    if (response.status === "OK") {
+      setMessage(deleteSuccessMessage);
+      setUserDeleted(true);
+    } else {
+      setMessage(deleteErrorMessage);
+    }
   };
 
   const onSubmit = async () => {
@@ -60,8 +74,16 @@ const AdminUserManagement = (props) => {
         { existingUsername, username, firstName, lastName },
         user.jwt
       );
+
+      if (response.status === "OK") {
+        setMessage(editSuccessMessage);
+        setUserData(userFormData);
+        setFormDisabled(true);
+      } else {
+        setMessage(editErrorMessage);
+      }
     } catch (e) {
-      setMessage(errorMessage);
+      setMessage(editErrorMessage);
     }
 
     if (response.status === "OK") {
@@ -71,20 +93,30 @@ const AdminUserManagement = (props) => {
     }
   };
 
-  // const ChangeUserEmail = (username) => {
-  //   var newEmail = prompt("enter new Email");
-  //   updateAccountEmail(username, newEmail, user.jwt).then((res) => {
-  //     console.log(res);
-  //     alert(res);
-  //   });
-  // };
+  if (userDeleted) {
+    return (
+      <SimplePageLayout>
+        <h3>User Management</h3>
+        <hr />
+        {message && (
+          <div className={`alert alert-${message.type}`}>{message.text}</div>
+        )}
+        <a href="/adminpanel">
+          <Button variant="primary">Return to Admin Panel</Button>
+        </a>
+      </SimplePageLayout>
+    );
+  }
 
   return (
     <SimplePageLayout>
       <h3>User Management</h3>
       <hr />
-      <Form onSubmit={onSubmit}>
-        <Stack direction="horizontal" style={{ justifyContent: "flex-end" }}>
+      <Form onSubmit={onSubmit} style={{ marginBottom: "4rem" }}>
+        <Stack
+          direction="horizontal"
+          style={{ justifyContent: "flex-end", marginBottom: "1rem" }}
+        >
           {formDisabled ? (
             <Button
               variant="primary"
@@ -138,14 +170,8 @@ const AdminUserManagement = (props) => {
               disabled={formDisabled}
             ></Form.Control>
           </Form.Group>
-          <hr />
-          {formDisabled && (
-            <div>
-              <Button variant="danger" onClick={() => DeleteUser(username)}>
-                Delete User
-              </Button>
-            </div>
-          )}
+          <hr style={{ marginTop: "2rem", marginBottom: "2rem" }} />
+          {formDisabled && <DeleteUserButton onClick={deleteUser} />}
         </Stack>
       </Form>
     </SimplePageLayout>
