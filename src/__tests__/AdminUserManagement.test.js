@@ -64,12 +64,27 @@ function renderAdminUserManagement(user) {
   );
 }
 
-function getFormInputs(screen) {
+function getFormInputs() {
   return {
     username: screen.getByLabelText("Username"),
     firstName: screen.getByLabelText("First Name"),
     lastName: screen.getByLabelText("Last Name"),
   };
+}
+
+async function inputNewValues(formInputs, newValues) {
+  // await userEvents
+  await act(async () => {
+    await userEvent.click(screen.getByText("Edit User"));
+
+    await userEvent.clear(formInputs.username);
+    await userEvent.clear(formInputs.firstName);
+    await userEvent.clear(formInputs.lastName);
+
+    await userEvent.type(formInputs.username, newValues.username);
+    await userEvent.type(formInputs.firstName, newValues.firstName);
+    await userEvent.type(formInputs.lastName, newValues.lastName);
+  });
 }
 
 describe("AdminUserManagement", () => {
@@ -187,7 +202,7 @@ describe("AdminUserManagement", () => {
       it("renders the form", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         expect(firstName).toBeInTheDocument();
         expect(lastName).toBeInTheDocument();
@@ -197,7 +212,7 @@ describe("AdminUserManagement", () => {
       it("renders the form as disabled by default", () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         expect(firstName).toBeDisabled();
         expect(lastName).toBeDisabled();
@@ -207,7 +222,7 @@ describe("AdminUserManagement", () => {
       it("renders the form with correct values", () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         expect(firstName.value).toBe(ADMIN_USER.firstName);
         expect(lastName.value).toBe(ADMIN_USER.lastName);
@@ -221,7 +236,7 @@ describe("AdminUserManagement", () => {
           await userEvent.click(screen.getByText("Edit User"));
         });
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         expect(firstName).not.toBeDisabled();
         expect(lastName).not.toBeDisabled();
@@ -236,7 +251,7 @@ describe("AdminUserManagement", () => {
           await userEvent.click(screen.getByText("Cancel"));
         });
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         expect(firstName).toBeDisabled();
         expect(lastName).toBeDisabled();
@@ -246,29 +261,26 @@ describe("AdminUserManagement", () => {
       it("displays changes in the inputs for an enabled form", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
-        await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.clear(firstName);
-          await userEvent.clear(lastName);
-          await userEvent.clear(username);
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@s");
-        });
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@s.com",
+          }
+        );
 
         expect(firstName.value).toBe("newFirstName");
         expect(lastName.value).toBe("newLastName");
-        expect(username.value).toBe("newUsername@s");
+        expect(username.value).toBe("newUsername@s.com");
       });
 
       it("reverts any changes in the form when Cancel button is clicked", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
 
         await act(async () => {
           await userEvent.click(screen.getByText("Edit User"));
@@ -288,7 +300,7 @@ describe("AdminUserManagement", () => {
       it("displays an error message when username is empty", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { username } = getFormInputs(screen);
+        const { username } = getFormInputs();
 
         await act(async () => {
           await userEvent.click(screen.getByText("Edit User"));
@@ -306,7 +318,7 @@ describe("AdminUserManagement", () => {
       it("displays an error message when username is invalid", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { username } = getFormInputs(screen);
+        const { username } = getFormInputs();
 
         await act(async () => {
           await userEvent.click(screen.getByText("Edit User"));
@@ -324,19 +336,18 @@ describe("AdminUserManagement", () => {
       it("calls updateUser with the correct data when the form is submitted", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
+
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          }
+        );
 
         await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.clear(firstName);
-          await userEvent.clear(lastName);
-          await userEvent.clear(username);
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@user.com");
-
           await userEvent.click(screen.getByText("Save"));
         });
 
@@ -354,15 +365,18 @@ describe("AdminUserManagement", () => {
       it("shows a success message when the form is successfully submitted", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
+
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          }
+        );
 
         await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@user.com");
-
           await userEvent.click(screen.getByText("Save"));
         });
 
@@ -374,19 +388,18 @@ describe("AdminUserManagement", () => {
       it("disables the form with the updated values when the form is successfully submitted", async () => {
         renderAdminUserManagement(ADMIN_USER);
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
+
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          }
+        );
 
         await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.clear(firstName);
-          await userEvent.clear(lastName);
-          await userEvent.clear(username);
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@user.com");
-
           await userEvent.click(screen.getByText("Save"));
         });
 
@@ -405,19 +418,18 @@ describe("AdminUserManagement", () => {
         renderAdminUserManagement(ADMIN_USER);
         mockUpdateUser.mockRejectedValue(new Error("Error updating user"));
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
+
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          }
+        );
 
         await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.clear(firstName);
-          await userEvent.clear(lastName);
-          await userEvent.clear(username);
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@user.com");
-
           userEvent.click(screen.getByText("Save"));
         });
 
@@ -430,19 +442,18 @@ describe("AdminUserManagement", () => {
         renderAdminUserManagement(ADMIN_USER);
         mockUpdateUser.mockRejectedValue(new Error("Error updating user"));
 
-        const { firstName, lastName, username } = getFormInputs(screen);
+        const { firstName, lastName, username } = getFormInputs();
+
+        await inputNewValues(
+          { firstName, lastName, username },
+          {
+            firstName: "newFirstName",
+            lastName: "newLastName",
+            username: "newUsername@user.com",
+          }
+        );
 
         await act(async () => {
-          await userEvent.click(screen.getByText("Edit User"));
-
-          await userEvent.clear(firstName);
-          await userEvent.clear(lastName);
-          await userEvent.clear(username);
-
-          await userEvent.type(firstName, "newFirstName");
-          await userEvent.type(lastName, "newLastName");
-          await userEvent.type(username, "newUsername@user.com");
-
           await userEvent.click(screen.getByText("Save"));
         });
 
