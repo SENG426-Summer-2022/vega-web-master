@@ -16,9 +16,21 @@ export function changeAccountRole(username, role, token){
 	return doGet(`${process.env.REACT_APP_SERVER_URL}/api/venus/admin/changerole?username=`+username+"&role="+role, token)
 }
 
-export function deleteAccount(username, token){
-	console.log("In AdminPAnel: Deleting user" + username)
-	return doGet("http://localhost:8000/api/venus/admin/deleteuser?username="+username, token)
+export function updateUser(
+  { existingUsername, username, firstName, lastName },
+  token
+) {
+  return doAuthPost("http://localhost:8000/api/venus/admin/updateuser");
+}
+
+export function updateAccountEmail(username, newEmail, token) {
+  return doGet(
+    "http://localhost:8000/api/venus/admin/changeemail?username=" +
+      username +
+      "&newemail=" +
+      newEmail,
+    token
+  );
 }
 
 export function updateAccountEmail(username, newEmail, token){
