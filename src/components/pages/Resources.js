@@ -51,6 +51,7 @@ const Resources = (props) => {
         setErrorMessage("Failed to upload. Please try again later.");
         return;
       }
+      alert("Upload successful. Please reload the page to see your file.");
       console.log("Response", res);
     });
   };

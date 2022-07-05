@@ -31,7 +31,7 @@ export function updateUser(
   headers
 ) {
   return doAuthPost(
-    `http://localhost:8080/venus/admin/updateuser/?username=${username}&newusername=${newusername}&newFirstname=${newFirstname}&newLastname=${newLastname}`,
+    `https://seng426group7backend.azurewebsites.net/venus/admin/updateuser/?username=${username}&newusername=${newusername}&newFirstname=${newFirstname}&newLastname=${newLastname}`,
     null,
     headers["authorization"]
   );

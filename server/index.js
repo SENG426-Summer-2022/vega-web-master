@@ -23,6 +23,12 @@ if (process.env.NODE_ENV === "development") {
     optionsSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
+} else {
+  var corsOptions = {
+    origin: "https://seng426group7frontendserver.azurewebsites.net/",
+    optionsSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
 }
 
 app.get("/", (req, res) => {
