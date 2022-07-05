@@ -131,23 +131,8 @@ describe("AdminPanel", () => {
       );
   });
 
-    // TODO
-    // test in other file?
-    // test that user can't access admin panel if not admin
-    // test("User cannot change user roles", async () => {
-    //   renderAdminPanel(USER_USER);
-    //   await act(() => fetchuserPromise);
-    //   expect(screen.getByText(/First Name/i)).toBeInTheDocument();
-    //   expect(screen.getByText(/Last Name/i)).toBeInTheDocument();
-
-    //   expect(screen.getByText(/Smith/i)).toBeInTheDocument();
-    // });
-
-    // test('Non-signed in users cannot change user roles', async () => {
-    //     renderAdminPanel(EMPTY_USER, []);
-    //     expect(screen.getByText(/First Name/i)).toBeInTheDocument();
-    // });
-  });
+    describe("Enable User", () => {
+      it("displays an Enable User button on each row");
 
   describe("Enable User", () => {
     it("allows Admin to enable user", async () => {
@@ -159,11 +144,17 @@ describe("AdminPanel", () => {
       act(() => {
         screen.getAllByText(/Enable User/i)[0].click();
       });
-      // wait for promise to resolve
-      await act(() => enableAccountPromise);
 
       // check that user is enabled
       expect(screen.getByText(/Disable User/i)).toBeInTheDocument();
     });
+  });
+
+  describe("as staff", () => {
+    it("does not render");
+  });
+
+  describe("as user", () => {
+    it("does not render");
   });
 });
