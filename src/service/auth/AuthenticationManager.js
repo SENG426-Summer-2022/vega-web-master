@@ -1,10 +1,10 @@
 import { doPost } from "../BaseAPI.js";
 
 export function login(userInfo) {
-  return doPost(`${process.env.REACT_APP_SERVER_URL}/api/login`, userInfo);
+  return doPost("http://localhost:8000/api/auth/login", userInfo);
 }
 
 // TODO add backend endpoint
 export function signup(userInfo) {
-  return doPost(`${process.env.REACT_APP_SERVER_URL}/api/signup`, userInfo);
+  return doPost("http://localhost:8000/api/auth/signup", userInfo);
 }

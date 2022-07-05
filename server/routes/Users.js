@@ -4,6 +4,6 @@ import UserController from "../controller/UsersController.js";
 let router = express();
 router.disable("x-powered-by");
 
-router.post("/changepassword", UserController.changePassword);
+router.post("/updatepassword", UserController.changePassword);
 
 export default router;

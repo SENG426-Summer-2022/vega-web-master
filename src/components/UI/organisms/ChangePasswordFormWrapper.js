@@ -92,21 +92,11 @@ const ChangePasswordFormWrapper = () => {
     const { newPassword } = values;
 
     // send to backend
-    let response;
     try {
-      response = await changePassword({ newPassword }, jwt);
+      await changePassword({ newPassword }, jwt);
     } catch (error) {
-      console.log(error);
       setMessage(changeErrorMessage);
       return;
-    }
-
-    if (response === "OK") {
-      setMessage(changeSuccessMessage);
-      // clear password fields
-      setValues(defaultValues);
-    } else {
-      setMessage(changeErrorMessage);
     }
   };
 
