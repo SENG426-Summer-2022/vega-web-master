@@ -1,66 +1,60 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 const UserContext = createContext({
-  user :'',
+  user: "",
   setUserInfo: () => {},
-  logout: () => {}
+  logout: () => {},
 });
 
-const UserProvider = ({children}) => {
-	// User is the name of the "data" that gets stored in context
-  	const [user, setUser] = useState({ username: '', jwt:'' , role: ''});
+const UserProvider = (props) => {
+  // User is the name of the "data" that gets stored in context
+  const [user, setUser] = useState({ username: "", jwt: "", role: "" });
 
-  	useEffect(() => {
-      const username =  window.localStorage.getItem("username");
-      const jwt =  window.localStorage.getItem("jwt");
-      const role =  window.localStorage.getItem("role");
-      if(username && jwt){
-        setUser({
-          username: username,
-          jwt: jwt,
-          role: role
-        })
-      }
-    }, [])
-
-    // Login updates the user data with a name parameter
-  	const setUserInfo = (name, jwt, role) => {
-    	console.log("SetUserInfo called");
-      setUser((user) => ({
-      		username: name,
-      		jwt: jwt,
-          role: role
-    	}));
-      console.log(user)
-      window.localStorage.setItem("username", name);
-      window.localStorage.setItem("jwt", jwt);
-      window.localStorage.setItem("role", role);
-  	};
-    // Get Logged in User info
-    const getUserInfo = () => {
-      return window.localStorage.getItem("jwt");
+  useEffect(() => {
+    const username =
+      props.user?.username || window.localStorage.getItem("username");
+    const jwt = props.user?.jwt || window.localStorage.getItem("jwt");
+    const role = props.user?.role || window.localStorage.getItem("role");
+    if (username && jwt) {
+      setUser({
+        username: username,
+        jwt: jwt,
+        role: role,
+      });
     }
+  }, [props.user?.jwt, props.user?.username, props.user?.role]);
 
-  	// Logout updates the user data to default
-  	const logout = () => {
-    	setUser((user) => ({
-      		username: '',
-      		jwt: '',
-          role: ''
-    	}));
-      window.localStorage.setItem("username", "");
-      window.localStorage.setItem("jwt","");
-      window.localStorage.setItem("role","");
-  	};
-    console.log("Rendering context provider");
-	return (
+  // Login updates the user data with a name parameter
+  const setUserInfo = (name, jwt, role) => {
+    setUser((user) => ({
+      username: name,
+      jwt: jwt,
+      role: role,
+    }));
+    window.localStorage.setItem("username", name);
+    window.localStorage.setItem("jwt", jwt);
+    window.localStorage.setItem("role", role);
+  };
 
-    	<UserContext.Provider value={{ user, setUserInfo, logout }}>
-      		{children}
-    	</UserContext.Provider>
-  	);
-}
+  const getUserInfo = () => {
+    return window.localStorage.getItem("jwt");
+  };
 
-export {
-  UserProvider, 
-  UserContext
-}
+  // Logout updates the user data to default
+  const logout = () => {
+    setUser((user) => ({
+      username: "",
+      jwt: "",
+      role: "",
+    }));
+    window.localStorage.setItem("username", "");
+    window.localStorage.setItem("jwt", "");
+    window.localStorage.setItem("role", "");
+  };
+  return (
+    <UserContext.Provider value={{ user, setUserInfo, logout }}>
+      {props.children}
+    </UserContext.Provider>
+  );
+};
+
+export { UserProvider, UserContext };
