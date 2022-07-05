@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';UserContext
+import React, { createContext, useState, useEffect } from 'react';
 const UserContext = createContext({
   user :'',
   setUserInfo: () => {},
