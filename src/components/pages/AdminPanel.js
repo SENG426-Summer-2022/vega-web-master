@@ -68,7 +68,7 @@ const AdminPanel = (props) => {
   const listOfUsersHTML = () => {
     console.log(listOfUsers);
     if (!listOfUsers.length) return;
-    return listOfUsers.map((user) => {
+    return listOfUsers.map((user, i) => {
       console.log(JSON.stringify(user));
       const auth = user.role.authority ? user.role.authority : "ROLE_USER";
       // HTML elements for the current users role
@@ -77,12 +77,12 @@ const AdminPanel = (props) => {
       // List of HTML elements that are != to the current users role
       const menuOption = Object.keys(roles)
         .filter((role) => role != auth)
-        .map((role) => <option value={role}>{roles[role]}</option>);
+        .map((role) => <option value={role} key={`option-${role}`}>{roles[role]}</option>);
 
       const EnableText = user.enabled ? "Disable User" : "Enable User";
 
       return (
-        <tr>
+        <tr key={`user-list-${i}`}>
           <td>{user.firstName}</td>
           <td>{user.lastName}</td>
           <td>{user.username}</td>
