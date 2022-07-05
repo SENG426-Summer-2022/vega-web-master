@@ -51,8 +51,8 @@ const AdminPanel = (props) => {
     });
   };
 
-  const manageUser = (username) => {
-    history.push("/usermanagement", username);
+  const manageUser = (user) => {
+    history.push("/usermanagement", user);
   };
 
   const updateEnabledState = (user) =>
@@ -100,7 +100,7 @@ const AdminPanel = (props) => {
             </Form.Select>
           </td>
           <td>
-            <Button variant="primary" onClick={() => manageUser(user.username)}>
+            <Button variant="primary" onClick={() => manageUser(user)}>
               Manage User
             </Button>
           </td>

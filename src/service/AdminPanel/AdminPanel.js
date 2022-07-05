@@ -1,4 +1,4 @@
-import {doAuthPost, doGet} from '../BaseAPI.js';
+import { doAuthPost, doGet } from "../BaseAPI.js";
 
 export function fetchuser(token){
 	return doGet(`${process.env.REACT_APP_SERVER_URL}/api/venus/admin/getusers`, token)
@@ -17,18 +17,19 @@ export function changeAccountRole(username, role, token){
 }
 
 export function deleteAccount(username, token) {
-	console.log("In AdminPAnel: Deleting user" + username);
-	return doGet(
-	  "http://localhost:8000/api/venus/admin/deleteuser?username=" + username,
-	  token
-	);
-  }
+  console.log("In AdminPAnel: Deleting user" + username);
+  return doGet(
+    "http://localhost:8000/api/venus/admin/deleteuser?username=" + username,
+    token
+  );
+}
 
-export function updateUser(
-  { existingUsername, username, firstName, lastName },
-  token
-) {
-  return doAuthPost("http://localhost:8000/api/venus/admin/updateuser");
+export function updateUser(data, token) {
+  return doAuthPost(
+    "http://localhost:8000/api/venus/admin/updateuser",
+    data,
+    token
+  );
 }
 
 export function updateAccountEmail(username, newEmail, token) {
@@ -41,6 +42,19 @@ export function updateAccountEmail(username, newEmail, token) {
   );
 }
 
-export function updateAccountusername(username, newUserFirstname, newUserLastname,token){
-	return doGet("http://localhost:8000/api/venus/admin/changeusername?username="+username+"&newfirstname="+newUserFirstname+"&newlastname="+newUserLastname, token)
+export function updateAccountusername(
+  username,
+  newUserFirstname,
+  newUserLastname,
+  token
+) {
+  return doGet(
+    "http://localhost:8000/api/venus/admin/changeusername?username=" +
+      username +
+      "&newfirstname=" +
+      newUserFirstname +
+      "&newlastname=" +
+      newUserLastname,
+    token
+  );
 }
