@@ -93,7 +93,7 @@ const ChangePasswordFormWrapper = () => {
 
     // send to backend
     try {
-      await changePassword({ newPassword }, jwt);
+      await changePassword(newPassword, jwt);
       setMessage(changeSuccessMessage);
     } catch (error) {
       setMessage(changeErrorMessage);

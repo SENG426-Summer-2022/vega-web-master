@@ -1,13 +1,19 @@
 import { updatePassword } from "../services/UserRequestAPI.js";
 
-export function changePassword(req, res) {
-  const { newPassword } = req.body;
+export async function changePassword(req, res) {
+  const { password } = req.body;
 
-  updatePassword(
-    `http://localhost:8080/venus/updatepassword/?password=${newPassword}`,
-    null,
-    req.headers
-  );
+  try {
+    const response = await updatePassword(
+      `http://localhost:8080/venus/updatepassword/?password=${password}`,
+      null,
+      req.headers
+    );
+
+    res.send(response);
+  } catch (e) {
+    res.send(e);
+  }
 }
 
 export default {
