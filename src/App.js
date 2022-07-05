@@ -13,6 +13,7 @@ import Leadership from "./components/pages/Leadership.js";
 import { UserProvider } from "./auth/UserProvider.js";
 import UserAccount from "./components/pages/UserAccount.js";
 import ContactUs from "./components/pages/ContactUs";
+import AdminUserManagement from "./components/pages/AdminUserManagement";
 
 function App() {
   return (
