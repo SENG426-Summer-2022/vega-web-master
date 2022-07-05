@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { Form, Table, Button } from "react-bootstrap";
 
 const AdminPanel = (props) => {
-	const history = useHistory();
+  const history = useHistory();
   const { user } = useContext(UserContext);
   const [listOfUsers, setUsers] = useState([]);
   
@@ -56,7 +56,6 @@ const AdminPanel = (props) => {
 		: enableUser(user.username);
 
   const manageUser = (username) => {
-    console.log("Redirect to UserManagement");
     history.push("/usermanagement", username);
   };
 
