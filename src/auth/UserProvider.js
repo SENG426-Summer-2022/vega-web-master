@@ -30,8 +30,14 @@ const UserProvider = (props) => {
       jwt: jwt,
       role: role,
     }));
+    window.localStorage.setItem("username", name);
+    window.localStorage.setItem("jwt", jwt);
+    window.localStorage.setItem("role", role);
   };
 
+  const getUserInfo = () => {
+    return window.localStorage.getItem("jwt");
+  };
 
   // Logout updates the user data to default
   const logout = () => {
