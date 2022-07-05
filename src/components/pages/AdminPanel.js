@@ -9,11 +9,11 @@ const AdminPanel = (_props) => {
 	const {user} = useContext(UserContext);
 	const [listOfUsers, setUsers] = useState([]);
 	const updateUsers = () => {
-		console.log("Inside useEffect")
-		fetchuser(user.jwt)
-			.then(resp => {
-				setUsers(resp)
-			})
+	    console.log("Updating Users")
+	    fetchuser(user.jwt)
+		.then(resp => {
+		    setUsers(resp)
+		})
 	}
 
 	useEffect(() => {
@@ -82,7 +82,7 @@ const AdminPanel = (_props) => {
 				<td onClick={() => updateEnabledState(user)}>
 					<a href="#">{EnableText}</a></td>
 				<td>
-					<Form.Select aria-label="Floating label select example"
+					<Form.Select id="role-select" aria-label="Floating label select example"
 						value={RoleText}
 						onChange={(evt) => changeRole(evt, user.username)}>
 						{RoleText}
