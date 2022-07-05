@@ -2,30 +2,53 @@ import FormData from 'form-data';
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
+const hostWhitelist = ["localhost:8080"];
+
+function getHostname (url) {
+  const nURL = new URL(url);
+  return nURL.hostname;
+}
+
 export async function doPost(url, data) {
-  const response = await fetch(url, createRequestOptions("POST", data));
-  return await handleResponse(response);
+  if (hostWhitelist.includes(getHostname(url))) {
+    const response = await fetch(url, createRequestOptions("POST", data));
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
 }
 
 export async function doAuthPost(url, data, token) {
-  const response = await fetch(url, createRequestOptions("POST", data, token));
-  return await handleResponse(response);
+  if (hostWhitelist.includes(getHostname(url))) {
+    const response = await fetch(url, createRequestOptions("POST", data, token));
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
 }
 
 export async function doGet(url, token) {
-  const response = await fetch(
-    url,
-    createRequestOptions("GET", undefined, token)
-  );
-  return await handleResponse(response);
+  if (hostWhitelist.includes(getHostname(url))) {
+    const response = await fetch(
+      url,
+      createRequestOptions("GET", undefined, token)
+    );
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
 }
 
 export async function doPostFile(url, data, headers) {
-  const response = await fetch(
-    url,
-    createRequestOptionsForFile("POST", data, headers)
-  );
-  return await handleResponse(response);
+  if (hostWhitelist.includes(getHostname(url))) {
+    const response = await fetch(
+      url,
+      createRequestOptionsForFile("POST", data, headers)
+    );
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
 }
 
 function createRequestOptionsForFile(method, data, headers){
