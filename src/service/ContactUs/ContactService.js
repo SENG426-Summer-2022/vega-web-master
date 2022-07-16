@@ -1,7 +1,7 @@
 import { doPost } from "../BaseAPI";
 
 export function sendMessage(name, email, message) {
-  return doPost(`https://seng426group7frontendserver.azurewebsites.net/api/contact`, {
+  return doPost(`http://localhost:8000/api/contact`, {
     name,
     email,
     message,

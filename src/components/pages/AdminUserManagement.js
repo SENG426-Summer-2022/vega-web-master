@@ -54,9 +54,9 @@ const AdminUserManagement = (props) => {
   const [message, setMessage] = useState();
   const [userDeleted, setUserDeleted] = useState(false);
 
-  if (user.role !== "ROLE_ADMIN") {
-    return <div>You are not authorized to access this page.</div>;
-  }
+  // if (user.role !== "ROLE_ADMIN") {
+  //   return <div>You are not authorized to access this page.</div>;
+  // }
 
   const cancelEdit = () => {
     setUserFormData(userData);
