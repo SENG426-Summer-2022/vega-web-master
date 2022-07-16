@@ -99,8 +99,8 @@ const AdminUserManagement = (props) => {
         {
           username: existingUsername,
           newusername: username,
-          firstName,
-          lastName,
+          newFirstname: firstName,
+          newLastname: lastName,
         },
         user.jwt
       );
