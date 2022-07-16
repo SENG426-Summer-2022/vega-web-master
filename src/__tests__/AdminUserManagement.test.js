@@ -357,8 +357,8 @@ describe("AdminUserManagement", () => {
         expect(mockUpdateUser).toHaveBeenCalledWith(
           {
             username: ADMIN_USER_INFO.username,
-            firstName: "newFirstName",
-            lastName: "newLastName",
+            newFirstname: "newFirstName",
+            newLastname: "newLastName",
             newusername: "newUsername@user.com",
           },
           ADMIN_USER.jwt
