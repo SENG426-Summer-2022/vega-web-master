@@ -15,7 +15,7 @@ const SignUp = () => {
       console.log(JSON.stringify(res));
       if (res.error) {
         setMessage(
-          "Failed To Process Your Registration Please Try Again Later"
+          "Failed To Process Your Registration, Please Try Again Later"
         );
         return;
       } // Login failed
