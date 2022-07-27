@@ -89,7 +89,7 @@ const AdminUserManagement = (props) => {
       return;
     }
 
-    if (!username.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    if (!username.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       setMessage(invalidUsernameMessage);
       return;
     }
