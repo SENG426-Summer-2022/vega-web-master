@@ -3,6 +3,7 @@ import {uploader, listFiles, fetchcontent} from '../services/FileHandlerAPI.js';
 import fileUpload from 'express-fileupload';
 
 let router = express();
+router.disable("x-powered-by");
 
 router.use(fileUpload({
   limits: { fileSize: 50 * 1024 * 1024 },
