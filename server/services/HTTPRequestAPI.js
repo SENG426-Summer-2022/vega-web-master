@@ -14,8 +14,14 @@ function getHostname (url) {
 }
 
 export async function doPost(url, data) {
+  console.log("In server doPost");
+  console.log(url);
+  console.log(data);
   if (hostWhitelist.includes(getHostname(url))) {
-    const response = await fetch(url, createRequestOptions("POST", data));
+    const options = createRequestOptions("POST", data);
+    console.log("Options:");
+    console.log(options);
+    const response = await fetch(url, options);
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");
@@ -24,7 +30,16 @@ export async function doPost(url, data) {
 
 export async function doAuthPost(url, data, token) {
   if (hostWhitelist.includes(getHostname(url))) {
-    const response = await fetch(url, createRequestOptions("POST", data, token));
+    const csrfToken = await fetch(
+      "http://localhost:8080/venus/csrf",
+      createRequestOptions("GET", undefined, token)
+    );
+    const parsedCsrf = await handleResponse(csrfToken);
+    console.log("PARSED CSRF");
+    console.log(parsedCsrf.token);
+    const options = createRequestOptions("POST", data, token, parsedCsrf.token);
+    console.log(options);
+    const response = await fetch(url, options);
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");
@@ -69,7 +84,7 @@ function createRequestOptionsForFile(method, data, headers){
   return requestOptions;
 }
 
-function createRequestOptions(method, data, token) {
+function createRequestOptions(method, data, token, csrf) {
   var requestOptions = {
     method: method,
     dataType: "json",
@@ -81,11 +96,18 @@ function createRequestOptions(method, data, token) {
   if (data) {
     requestOptions.body = JSON.stringify(data);
   }
+  if (csrf) {
+    requestOptions.headers["X-XSRF-TOKEN"] = csrf;
+  }
+  console.log("options:");
+  console.log(requestOptions);
   return requestOptions;
 }
 
 export async function handleResponse(response) {
   let result;
+
+  console.log("RESPONSE: ", response);
 
   result = handleJSONResult(await response.text());
 

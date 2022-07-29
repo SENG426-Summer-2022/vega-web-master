@@ -17,19 +17,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
 app.disable("x-powered-by");
 
-if (process.env.NODE_ENV === "development") {
-  var corsOptions = {
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200,
-  };
-  app.use(cors(corsOptions));
-} else {
-  var corsOptions = {
-    origin: "https://seng426group7frontend.azurewebsites.net",
-    optionsSuccessStatus: 200,
-  };
-  app.use(cors(corsOptions));
-}
+// if (process.env.NODE_ENV === "development") {
+//   var corsOptions = {
+//     origin: "http://localhost:3000",
+//     optionsSuccessStatus: 200,
+//   };
+//   app.use(cors(corsOptions));
+// } else {
+//   var corsOptions = {
+//     origin: "https://seng426group7frontend.azurewebsites.net",
+//     optionsSuccessStatus: 200,
+//   };
+//   app.use(cors(corsOptions));
+// }
+var corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

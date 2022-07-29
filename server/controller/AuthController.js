@@ -1,4 +1,4 @@
-import { login, signup } from "../services/LoginRequestAPI.js";
+import { login, signup, getCsrf } from "../services/LoginRequestAPI.js";
 import express from "express";
 
 let router = express();
@@ -7,7 +7,7 @@ router.disable("x-powered-by");
 router.post("/login", (req, res) => {
   const userInfo = req.body;
   console.log("Authenticating User");
-  login("https://seng426group7backend.azurewebsites.net/venus/authenticate", userInfo)
+  login("http://localhost:8080/venus/authenticate", userInfo)
     .then((response) => {
       console.log("Response", response);
       res.send(response);
@@ -23,7 +23,7 @@ router.post("/signup", (req, res) => {
   const userInfo = req.body;
   console.log(userInfo);
   console.log("Registering User");
-  signup("https://seng426group7backend.azurewebsites.net/venus/register", userInfo)
+  signup("http://localhost:8080/venus/register", userInfo)
     .then((response) => {
       console.log("Response", response);
       res.send(response);
@@ -32,6 +32,20 @@ router.post("/signup", (req, res) => {
       console.log("ERROR:", error);
       res.send(error);
     });
+});
+
+router.get("/csrf", (req, res) => {
+	console.log("CSRF")
+	getCsrf("http://localhost:8080/venus/csrf", req.headers)
+	.then(response => {
+    	console.log("Response", response);
+    	res.send(response);
+    })
+    .catch(error => {
+    	console.log("ERROR:", error);
+    	res.send(error);
+    })
+
 });
 
 export default router;
