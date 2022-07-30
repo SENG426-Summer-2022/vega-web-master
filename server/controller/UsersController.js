@@ -5,7 +5,7 @@ export async function changePassword(req, res) {
 
   try {
     const response = await updatePassword(
-      `http://localhost:8080/venus/updatepassword/?password=${password}`,
+      `http://localhost:8080/venus/updatepassword?password=${password}`,
       null,
       req.headers
     );

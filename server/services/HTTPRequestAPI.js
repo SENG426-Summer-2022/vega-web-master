@@ -19,8 +19,8 @@ export async function doPost(url, data) {
   console.log(data);
   if (hostWhitelist.includes(getHostname(url))) {
     const options = createRequestOptions("POST", data);
-    console.log("Options:");
-    console.log(options);
+    console.log("Options:", options);
+    
     const response = await fetch(url, options);
     return await handleResponse(response);
   } else {
@@ -35,10 +35,25 @@ export async function doAuthPost(url, data, token) {
       createRequestOptions("GET", undefined, token)
     );
     const parsedCsrf = await handleResponse(csrfToken);
-    console.log("PARSED CSRF");
-    console.log(parsedCsrf.token);
+
     const options = createRequestOptions("POST", data, token, parsedCsrf.token);
-    console.log(options);
+    const response = await fetch(url, options);
+
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
+}
+
+export async function doAuthGet(url, data, token) {
+  if (hostWhitelist.includes(getHostname(url))) {
+    const csrfToken = await fetch(
+      "http://localhost:8080/venus/csrf",
+      createRequestOptions("GET", undefined, token)
+    );
+    const parsedCsrf = await handleResponse(csrfToken);
+
+    const options = createRequestOptions("GET", data, token, parsedCsrf.token);
     const response = await fetch(url, options);
     return await handleResponse(response);
   } else {
@@ -99,8 +114,6 @@ function createRequestOptions(method, data, token, csrf) {
   if (csrf) {
     requestOptions.headers["X-XSRF-TOKEN"] = csrf;
   }
-  console.log("options:");
-  console.log(requestOptions);
   return requestOptions;
 }
 
