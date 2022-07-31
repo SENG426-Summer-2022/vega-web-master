@@ -1,5 +1,5 @@
-import { doAuthPost } from "./HTTPRequestAPI.js";
+import { doAuthGet } from "./HTTPRequestAPI.js";
 
 export function updatePassword(url, data, headers) {
-  return doAuthPost(url, data, headers["authorization"]);
+  return doAuthGet(url, data, headers["authorization"]);
 }
