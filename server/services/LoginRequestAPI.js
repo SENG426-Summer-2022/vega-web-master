@@ -1,9 +1,6 @@
 import {doPost, doGet} from './HTTPRequestAPI.js';
 
 export function login(url, data){
-	console.log("In the server login");
-	console.log(url);
-	console.log(data);
 	return doPost(url, data);
 }
 

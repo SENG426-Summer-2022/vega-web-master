@@ -14,14 +14,8 @@ function getHostname (url) {
 }
 
 export async function doPost(url, data) {
-  console.log("In server doPost");
-  console.log(url);
-  console.log(data);
   if (hostWhitelist.includes(getHostname(url))) {
-    const options = createRequestOptions("POST", data);
-    console.log("Options:", options);
-    
-    const response = await fetch(url, options);
+    const response = await fetch(url, createRequestOptions("POST", data));
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");
@@ -31,14 +25,11 @@ export async function doPost(url, data) {
 export async function doAuthPost(url, data, token) {
   if (hostWhitelist.includes(getHostname(url))) {
     const csrfToken = await fetch(
-      "http://localhost:8080/venus/csrf",
+      "https://seng426group7backend.azurewebsites.net/venus/csrf",
       createRequestOptions("GET", undefined, token)
     );
     const parsedCsrf = await handleResponse(csrfToken);
-
-    const options = createRequestOptions("POST", data, token, parsedCsrf.token);
-    const response = await fetch(url, options);
-
+    const response = await fetch(url, createRequestOptions("POST", data, token, parsedCsrf.token));
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");
@@ -48,13 +39,11 @@ export async function doAuthPost(url, data, token) {
 export async function doAuthGet(url, data, token) {
   if (hostWhitelist.includes(getHostname(url))) {
     const csrfToken = await fetch(
-      "http://localhost:8080/venus/csrf",
+      "https://seng426group7backend.azurewebsites.net/venus/csrf",
       createRequestOptions("GET", undefined, token)
     );
     const parsedCsrf = await handleResponse(csrfToken);
-
-    const options = createRequestOptions("GET", data, token, parsedCsrf.token);
-    const response = await fetch(url, options);
+    const response = await fetch(url, createRequestOptions("GET", data, token, parsedCsrf.token));
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");

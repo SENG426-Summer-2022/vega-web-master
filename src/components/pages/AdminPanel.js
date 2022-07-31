@@ -5,7 +5,6 @@ import {
   enableAccount,
   changeAccountRole,
 } from "../../service/AdminPanel/AdminPanel.js";
-import { getCSRF } from "../../service/auth/AuthenticationManager.js";
 import { UserContext } from "../../auth/UserProvider.js";
 import { useState, useContext, useEffect } from "react";
 
@@ -24,19 +23,7 @@ const AdminPanel = (props) => {
     });
   };
 
-  const csrf = (userInfo) => {
-    getCSRF(user.jwt).then((res) => {
-      if (res.error) {
-        console.log("Failure!");
-        console.log(JSON.stringify(res));
-        return;
-      }
-      console.log(JSON.stringify(res));
-    });
-  }
-
   useEffect(() => {
-    csrf();
     updateUsers();
   }, [user]);
 
