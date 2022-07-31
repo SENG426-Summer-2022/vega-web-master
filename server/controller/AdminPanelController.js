@@ -20,7 +20,7 @@ router.use(fileUpload({
 
 router.get("/getusers", (req, res) => {
 	console.log("Entered list files");
-	fetchusers("http://localhost:8080/venus/admin/fetchusers", req.headers)
+	fetchusers("https://seng426group7backend.azurewebsites.net/venus/admin/fetchusers", req.headers)
 	.then(response => {
     	console.log("Response", response);
     	res.send(response);
@@ -35,7 +35,7 @@ router.get("/enableuser", (req, res) => {
 	console.log("Request: Enable User");
 	const {username} = req.query;
 	const {enable} = req.query;
-	enableAccount(`http://localhost:8080/venus/admin/enableuser?username=${username}&enable=${enable}`, req.headers)
+	enableAccount(`https://seng426group7backend.azurewebsites.net/venus/admin/enableuser?username=${username}&enable=${enable}`, req.headers)
 	.then(response => {
     	console.log("Response", response);
     	res.send(response);
@@ -50,7 +50,7 @@ router.get("/changerole", (req, res) => {
 	console.log("Request: Change Role")
 	const {username} = req.query;
 	const {role} = req.query;
-	changeRole(`http://localhost:8080/venus/admin/changerole?username=${username}&role=${role}`, req.headers)
+	changeRole(`https://seng426group7backend.azurewebsites.net/venus/admin/changerole?username=${username}&role=${role}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
@@ -66,7 +66,7 @@ router.get("/changerole", (req, res) => {
 router.get("/deleteuser", (req, res) => {
 	console.log("Request: Delete User")
 	const {username} = req.query;
-	deleteAccount(`http://localhost:8080/venus/admin/deleteuser?username=${username}`, req.headers)
+	deleteAccount(`https://seng426group7backend.azurewebsites.net/venus/admin/deleteuser?username=${username}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
@@ -81,7 +81,7 @@ router.get("/changeemail", (req, res) => {
 	console.log("Request: Change Email")
 	const {username} = req.query;
 	const {newemail} = req.query;
-	changeEmail(`http://localhost:8080/venus/admin/changeemail?username=${username}&email=${newemail}`, req.headers)
+	changeEmail(`https://seng426group7backend.azurewebsites.net/venus/admin/changeemail?username=${username}&email=${newemail}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
@@ -97,7 +97,7 @@ router.get("/changeusername", (req, res) => {
 	const {username} = req.query;
 	const {newUserFirstname} = req.query;
 	const {newUserLastname} = req.query;
-	changeUsername(`http://localhost:8080/venus/admin/changeusername?username=${username}&newuserfirstname=${newUserFirstname}&newuserlastname=${newUserLastname}`, req.headers)
+	changeUsername(`https://seng426group7backend.azurewebsites.net/venus/admin/changeusername?username=${username}&newuserfirstname=${newUserFirstname}&newuserlastname=${newUserLastname}`, req.headers)
 	.then(response => {
 		console.log("Response", response);
 		res.send(response);
@@ -110,7 +110,6 @@ router.get("/changeusername", (req, res) => {
 
 router.post("/updateuser", async (req, res) => {
   const body = req.body;
-  console.log("in /updateuser");
   const response = await updateUser(body, req.headers);
   res.send(response);
 });
