@@ -25,6 +25,7 @@ export function deleteAccount(username, token) {
 }
 
 export function updateUser(data, token) {
+  console.log("UpdateUser authpost frontend")
   return doAuthPost(
     "https://seng426group7frontendserver.azurewebsites.net/api/venus/admin/updateuser",
     data,
