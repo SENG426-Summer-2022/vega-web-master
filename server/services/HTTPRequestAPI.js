@@ -24,7 +24,26 @@ export async function doPost(url, data) {
 
 export async function doAuthPost(url, data, token) {
   if (hostWhitelist.includes(getHostname(url))) {
-    const response = await fetch(url, createRequestOptions("POST", data, token));
+    const csrfToken = await fetch(
+      "https://seng426group7backend.azurewebsites.net/venus/csrf",
+      createRequestOptions("GET", undefined, token)
+    );
+    const parsedCsrf = await handleResponse(csrfToken);
+    const response = await fetch(url, createRequestOptions("POST", data, token, parsedCsrf.token));
+    return await handleResponse(response);
+  } else {
+    throw new Error("Host not allowed");
+  }
+}
+
+export async function doAuthGet(url, data, token) {
+  if (hostWhitelist.includes(getHostname(url))) {
+    const csrfToken = await fetch(
+      "https://seng426group7backend.azurewebsites.net/venus/csrf",
+      createRequestOptions("GET", undefined, token)
+    );
+    const parsedCsrf = await handleResponse(csrfToken);
+    const response = await fetch(url, createRequestOptions("GET", data, token, parsedCsrf.token));
     return await handleResponse(response);
   } else {
     throw new Error("Host not allowed");
@@ -69,7 +88,7 @@ function createRequestOptionsForFile(method, data, headers){
   return requestOptions;
 }
 
-function createRequestOptions(method, data, token) {
+function createRequestOptions(method, data, token, csrf) {
   var requestOptions = {
     method: method,
     dataType: "json",
@@ -81,11 +100,16 @@ function createRequestOptions(method, data, token) {
   if (data) {
     requestOptions.body = JSON.stringify(data);
   }
+  if (csrf) {
+    requestOptions.headers["X-XSRF-TOKEN"] = csrf;
+  }
   return requestOptions;
 }
 
 export async function handleResponse(response) {
   let result;
+
+  console.log("RESPONSE: ", response);
 
   result = handleJSONResult(await response.text());
 

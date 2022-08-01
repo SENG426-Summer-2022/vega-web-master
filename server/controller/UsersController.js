@@ -5,7 +5,7 @@ export async function changePassword(req, res) {
 
   try {
     const response = await updatePassword(
-      `https://seng426group7backend.azurewebsites.net/venus/updatepassword/?password=${password}`,
+      `https://seng426group7backend.azurewebsites.net/venus/updatepassword?password=${password}`,
       null,
       req.headers
     );

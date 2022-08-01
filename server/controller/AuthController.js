@@ -1,4 +1,4 @@
-import { login, signup } from "../services/LoginRequestAPI.js";
+import { login, signup, getCsrf } from "../services/LoginRequestAPI.js";
 import express from "express";
 
 let router = express();
@@ -32,6 +32,20 @@ router.post("/signup", (req, res) => {
       console.log("ERROR:", error);
       res.send(error);
     });
+});
+
+router.get("/csrf", (req, res) => {
+	console.log("CSRF")
+	getCsrf("https://seng426group7backend.azurewebsites.net/venus/csrf", req.headers)
+	.then(response => {
+    	console.log("Response", response);
+    	res.send(response);
+    })
+    .catch(error => {
+    	console.log("ERROR:", error);
+    	res.send(error);
+    })
+
 });
 
 export default router;
