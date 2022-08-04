@@ -36,6 +36,7 @@ app.use(
       "object-src": ["'self'"],
       "frame-ancestors": ["'self'"],
     },
+    blockAllMixedContent: [],
   })
 );
 app.use(rateLimiterMiddleware);
