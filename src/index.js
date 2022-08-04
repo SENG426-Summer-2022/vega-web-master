@@ -13,7 +13,7 @@ ReactDOM.render(
       <Helmet>
         <meta
           http-equiv="Content-Security-Policy"
-          content="connect-src 'self' http://localhost:8000 http://seng426group7frontendserver.azurewebsites.net;
+          content="connect-src 'self' http://localhost:8000 https://seng426group7frontendserver.azurewebsites.net;
         default-src 'none';
         img-src 'self' data:;
         manifest-src 'self';
