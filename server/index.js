@@ -35,8 +35,8 @@ app.use(
       "script-src": ["'unsafe-inline'", "'self'"],
       "object-src": ["'self'"],
       "frame-ancestors": ["'self'"],
+      blockAllMixedContent: [],
     },
-    blockAllMixedContent: [],
   })
 );
 app.use(rateLimiterMiddleware);
