@@ -34,6 +34,7 @@ app.use(
       "style-src-elem": ["'self'", "data:"],
       "script-src": ["'unsafe-inline'", "'self'"],
       "object-src": ["'self'"],
+      "frame-ancestors": ["'self'"],
     },
   })
 );
