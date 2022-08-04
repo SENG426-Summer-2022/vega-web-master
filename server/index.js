@@ -1,7 +1,6 @@
 import contact from "./controller/ContactController.js";
 import express from "express";
 import { config } from "dotenv";
-import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
 import compression from "compression";
